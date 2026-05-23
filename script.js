@@ -1,121 +1,104 @@
-const portal = document.getElementById('portal');
-const boton = document.getElementById('botonPortal');
-const menu = document.getElementById('menu');
-let abierto = false;
+const portal = document.getElementById('madrePortal');
+const triggerBtn = document.getElementById('portalTrigger');
+let portalAbierto = true;
 
-// Abrir/cerrar portal y mostrar menú
-boton.addEventListener('click', () => {
-    if (!abierto) {
-        // Abrir portal
-        menu.classList.add('mostrar');
-        boton.textContent = '🌀 CERRAR PORTAL 🌀';
-        portal.style.animation = 'latir 0.5s infinite';
-        abierto = true;
-        
-        // Sacudida
-        document.body.style.transform = 'translateX(5px)';
-        setTimeout(() => {
-            document.body.style.transform = '';
-        }, 100);
-    } else {
+// Seguimiento del mouse para luces parpadeantes
+document.addEventListener('mousemove', (e) => {
+    const x = (e.clientX / window.innerWidth) * 100;
+    const y = (e.clientY / window.innerHeight) * 100;
+    document.documentElement.style.setProperty('--x', `${x}%`);
+    document.documentElement.style.setProperty('--y', `${y}%`);
+});
+
+// Efecto de abrir/cerrar portal
+triggerBtn.addEventListener('click', () => {
+    if (portalAbierto) {
         // Cerrar portal
-        menu.classList.remove('mostrar');
-        boton.textContent = '⚡ ABRIR PORTAL ⚡';
-        portal.style.animation = 'latir 1.5s infinite';
-        abierto = false;
+        portal.style.animation = 'none';
+        portal.style.transform = 'scale(0.3)';
+        portal.style.opacity = '0';
+        portal.style.filter = 'blur(30px)';
+        triggerBtn.textContent = '🌀 ABRIR PORTAL 🌀';
+        portalAbierto = false;
+        
+        console.log('🌀 Portal cerrado...');
+    } else {
+        // Abrir portal
+        portal.style.animation = 'palpitar 1s ease-in-out infinite';
+        portal.style.transform = 'scale(1)';
+        portal.style.opacity = '1';
+        portal.style.filter = 'blur(0px)';
+        triggerBtn.textContent = '⚡ CERRAR PORTAL ⚡';
+        portalAbierto = true;
+        
+        // Efecto de sacudida
+        document.body.style.animation = 'shakePortal 0.3s ease-in-out';
+        setTimeout(() => {
+            document.body.style.animation = '';
+        }, 300);
+        console.log('⚡ Portal abierto ⚡');
     }
 });
 
-// Mostrar modales al hacer clic en las secciones
-const secciones = document.querySelectorAll('.seccion-btn');
-const modales = document.querySelectorAll('.modal');
+// Efecto de sacudida
+const shakeStyle = document.createElement('style');
+shakeStyle.textContent = `
+    @keyframes shakePortal {
+        0%, 100% { transform: translate(0, 0); }
+        25% { transform: translate(-5px, 5px); }
+        50% { transform: translate(5px, -5px); }
+        75% { transform: translate(-5px, -5px); }
+    }
+`;
+document.head.appendChild(shakeStyle);
 
-secciones.forEach(btn => {
-    btn.addEventListener('click', () => {
-        const seccionId = btn.getAttribute('data-seccion');
-        const modal = document.getElementById(seccionId);
-        if (modal) {
-            modal.style.display = 'block';
-        }
-    });
+// Interacción con el portal
+portal.addEventListener('mouseenter', () => {
+    portal.style.boxShadow = '0 0 180px rgba(255, 50, 0, 0.9), inset 0 0 60px rgba(0,0,0,0.8)';
+    portal.style.transform = 'scale(1.02)';
 });
 
-// Cerrar modales
-const cerrarBtns = document.querySelectorAll('.cerrar');
-cerrarBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-        modales.forEach(modal => {
-            modal.style.display = 'none';
-        });
-    });
+portal.addEventListener('mouseleave', () => {
+    portal.style.boxShadow = '0 0 100px rgba(255, 0, 0, 0.8), 0 0 200px rgba(255, 50, 0, 0.6)';
+    portal.style.transform = 'scale(1)';
 });
 
-// Cerrar modal al hacer clic fuera
-window.addEventListener('click', (e) => {
-    if (e.target.classList.contains('modal')) {
-        e.target.style.display = 'none';
+// Easter Egg
+document.addEventListener('keydown', (e) => {
+    if (e.ctrlKey && e.key === 'd') {
+        alert('💀✨ ¡HAS DESCUBIERTO EL MENSAJE SECRETO! ✨💀\n"Vecna está mirando desde el otro lado..."');
+        document.body.style.filter = 'hue-rotate(180deg)';
+        setTimeout(() => {
+            document.body.style.filter = '';
+        }, 2000);
     }
 });
 
-// Formulario
-const formulario = document.getElementById('formulario');
-if (formulario) {
-    formulario.addEventListener('submit', (e) => {
-        e.preventDefault();
-        alert('✨ ¡Tu creación cruzó el portal! ✨');
-        formulario.reset();
-    });
-}
-
-// Partículas rojas
+// Partículas rojas que caen
 function crearParticula() {
     const particula = document.createElement('div');
+    particula.classList.add('particula');
     particula.style.position = 'fixed';
-    particula.style.width = '3px';
-    particula.style.height = '3px';
+    particula.style.width = '2px';
+    particula.style.height = '2px';
     particula.style.backgroundColor = '#ff3300';
-    particula.style.left = Math.random() * window.innerWidth + 'px';
     particula.style.top = '0px';
+    particula.style.left = Math.random() * window.innerWidth + 'px';
     particula.style.opacity = Math.random();
     particula.style.borderRadius = '50%';
     particula.style.pointerEvents = 'none';
+    particula.style.zIndex = '999';
     document.body.appendChild(particula);
     
-    let y = 0;
-    const caer = setInterval(() => {
-        y += 3;
-        particula.style.transform = `translateY(${y}px)`;
-        if (y > window.innerHeight) {
-            clearInterval(caer);
+    let posY = 0;
+    const interval = setInterval(() => {
+        posY += 5;
+        particula.style.transform = `translateY(${posY}px)`;
+        if (posY > window.innerHeight) {
+            clearInterval(interval);
             particula.remove();
         }
     }, 30);
 }
 
-setInterval(crearParticula, 200);
-
-// Easter Egg
-document.addEventListener('keydown', (e) => {
-    if (e.ctrlKey && e.key === 'd') {
-        alert('💀 ¡MENSAJE SECRETO! 💀\nVecna te está observando...');
-        document.body.style.filter = 'hue-rotate(180deg)';
-        setTimeout(() => {
-            document.body.style.filter = '';
-        }, 1500);
-    }
-});
-
-// Efecto de luces al mover mouse
-document.addEventListener('mousemove', (e) => {
-    const luz = document.createElement('div');
-    luz.style.position = 'fixed';
-    luz.style.width = '100px';
-    luz.style.height = '100px';
-    luz.style.background = 'radial-gradient(circle, rgba(255,0,0,0.2), transparent)';
-    luz.style.left = e.clientX - 50 + 'px';
-    luz.style.top = e.clientY - 50 + 'px';
-    luz.style.pointerEvents = 'none';
-    luz.style.zIndex = '9999';
-    document.body.appendChild(luz);
-    setTimeout(() => luz.remove(), 200);
-});
+setInterval(crearParticula, 300);
