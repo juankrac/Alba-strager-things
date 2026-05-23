@@ -3,35 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Stranger Things - Portal Madre | Bienvenidos al Upside Down</title>
+    <title>Stranger Things - Portal Madre | Upside Down</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="portal-container">
-        <!-- Portal Madre (estilo carne realista) -->
+        <!-- Portal Madre -->
         <div class="madre-portal" id="madrePortal">
             <div class="portal-core"></div>
             <div class="portal-venas"></div>
             <div class="portal-tejido"></div>
             <div class="portal-electricidad"></div>
             <div class="portal-smoke"></div>
+            
+            <!-- SECCIONES DENTRO DEL PORTAL (se muestran al abrir) -->
+            <div class="portal-sections" id="portalSections">
+                <div class="section-card" data-section="inicio">
+                    <h3>👻 INICIO</h3>
+                    <p>Bienvenido al Upside Down</p>
+                </div>
+                <div class="section-card" data-section="personajes">
+                    <h3>👥 PERSONAJES</h3>
+                    <p>Eleven, Mike, Dustin...</p>
+                </div>
+                <div class="section-card" data-section="curiosidades">
+                    <h3>📚 CURIOSIDADES</h3>
+                    <p>Datos fascinantes</p>
+                </div>
+                <div class="section-card" data-section="creatividad">
+                    <h3>🎨 CREATIVIDAD</h3>
+                    <p>Comparte tu arte</p>
+                </div>
+            </div>
         </div>
 
-        <!-- Efecto de distorsión ambiental -->
         <div class="distortion-overlay"></div>
-        
-        <!-- Luces parpadeantes estilo Hawkins Lab -->
         <div class="flicker-lights"></div>
 
-        <!-- Texto debajo del portal (SOLO cambia el texto, NO se borra nada) -->
+        <!-- Texto debajo del portal -->
         <div class="portal-text">
-            <h1 class="glitch" data-text="BIENVENIDOS AL MUNDO DE STRANGER THINGS">BIENVENIDOS AL MUNDO DE STRANGER THINGS</h1>
+            <h1 class="glitch">BIENVENIDOS AL MUNDO DE STRANGER THINGS</h1>
             <p>“No todos sobreviven...”</p>
             <div class="heartbeat"></div>
         </div>
 
-        <!-- Botón de interacción para abrir/cerrar el portal -->
         <button class="portal-trigger" id="portalTrigger">⚡ ABRIR PORTAL ⚡</button>
+    </div>
+
+    <!-- CONTENEDORES DE CADA SECCIÓN (se muestran al hacer clic en las tarjetas) -->
+    <div id="seccionesContainer" style="display: none;">
+        <div id="inicio" class="seccion">
+            <h2>👻 INICIO</h2>
+            <p>Bienvenido al Upside Down. Un lugar oscuro lleno de peligros y misterios...</p>
+        </div>
+        <div id="personajes" class="seccion">
+            <h2>👥 PERSONAJES</h2>
+            <div class="personajes-grid">
+                <div class="personaje">Eleven - La telequinética</div>
+                <div class="personaje">Mike - El líder</div>
+                <div class="personaje">Dustin - El cerebrito</div>
+                <div class="personaje">Lucas - El estratega</div>
+                <div class="personaje">Will - El superviviente</div>
+                <div class="personaje">Max - La patinadora</div>
+            </div>
+        </div>
+        <div id="curiosidades" class="seccion">
+            <h2>📚 CURIOSIDADES</h2>
+            <ul>
+                <li>La serie iba a llamarse "Montauk"</li>
+                <li>Los hermanos Duffer se inspiraron en los 80</li>
+                <li>El Demogorgon fue hecho sin CGI</li>
+            </ul>
+        </div>
+        <div id="creatividad" class="seccion">
+            <h2>🎨 CREATIVIDAD</h2>
+            <form id="formCreativo">
+                <input type="text" placeholder="Tu nombre" required>
+                <textarea placeholder="Comparte tu arte, historia o teoría..."></textarea>
+                <button type="submit">Enviar al Upside Down</button>
+            </form>
+        </div>
     </div>
 
     <script src="script.js"></script>
