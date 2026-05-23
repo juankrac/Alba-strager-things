@@ -1,7 +1,3 @@
-/* ===========================
-   ESTILOS DEL UPSIDE DOWN
-   =========================== */
-
 * {
     margin: 0;
     padding: 0;
@@ -9,760 +5,261 @@
 }
 
 body {
-    font-family: 'Courier New', monospace;
-    color: #fff;
-    overflow-x: hidden;
-    position: relative;
-}
-
-/* Fondo Upside Down animado */
-.upside-down-bg {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, #1a0033 0%, #2d0052 25%, #1a0033 50%, #0d001a 75%, #1a0033 100%);
-    background-size: 400% 400%;
-    z-index: -2;
-    animation: upside-down-shift 15s ease infinite;
-}
-
-@keyframes upside-down-shift {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
-
-/* Efecto de partículas flotantes */
-.upside-down-bg::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: 
-        radial-gradient(circle at 20% 50%, rgba(139, 0, 255, 0.3) 0%, transparent 50%),
-        radial-gradient(circle at 80% 80%, rgba(255, 0, 120, 0.2) 0%, transparent 50%);
-    z-index: -1;
-    animation: pulse 4s ease-in-out infinite;
-}
-
-@keyframes pulse {
-    0%, 100% { opacity: 0.5; }
-    50% { opacity: 1; }
-}
-
-/* Navegación */
-.navbar {
-    position: sticky;
-    top: 0;
-    background: rgba(10, 0, 20, 0.95);
-    backdrop-filter: blur(10px);
-    border-bottom: 3px solid #8b00ff;
-    padding: 1rem 0;
-    z-index: 100;
-    box-shadow: 0 0 20px rgba(139, 0, 255, 0.5);
-}
-
-.nav-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 2rem;
-}
-
-.logo {
-    font-size: 2rem;
-    font-weight: bold;
-    color: #ff0078;
-    text-shadow: 0 0 10px #ff0078, 0 0 20px #8b00ff;
-    letter-spacing: 3px;
-}
-
-.nav-menu {
-    display: flex;
-    list-style: none;
-    gap: 2rem;
-}
-
-.nav-link {
-    color: #fff;
-    text-decoration: none;
-    font-size: 1.1rem;
-    transition: all 0.3s ease;
-    position: relative;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-.nav-link::after {
-    content: '';
-    position: absolute;
-    bottom: -5px;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background: #8b00ff;
-    transition: width 0.3s ease;
-}
-
-.nav-link:hover {
-    color: #ff0078;
-    text-shadow: 0 0 10px #ff0078;
-}
-
-.nav-link:hover::after {
-    width: 100%;
-}
-
-/* Contenedor general */
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 2rem;
-}
-
-/* Secciones */
-.section {
+    background: #0a0a0a;
     min-height: 100vh;
-    padding: 60px 20px;
-    position: relative;
     display: flex;
-    align-items: center;
     justify-content: center;
-}
-
-.section-title {
-    font-size: 3rem;
-    text-align: center;
-    margin-bottom: 3rem;
-    text-transform: uppercase;
-    letter-spacing: 3px;
-    color: #ff0078;
-    text-shadow: 0 0 10px #ff0078, 0 0 20px #8b00ff;
-    position: relative;
-    padding-bottom: 1.5rem;
-}
-
-.section-title::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 200px;
-    height: 3px;
-    background: linear-gradient(90deg, transparent, #8b00ff, transparent);
-    box-shadow: 0 0 10px #8b00ff;
-}
-
-/* ===== SECCIÓN INICIO ===== */
-.inicio-section {
-    background: linear-gradient(180deg, rgba(26, 0, 51, 0.8) 0%, rgba(45, 0, 82, 0.8) 100%);
-}
-
-.content-wrapper {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 4rem;
     align-items: center;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.inicio-text h2 {
-    font-size: 2.5rem;
-    margin-bottom: 1.5rem;
-    color: #ff0078;
-    text-shadow: 0 0 10px #ff0078;
-}
-
-.intro-text {
-    font-size: 1.1rem;
-    line-height: 1.8;
-    margin-bottom: 1.5rem;
-    color: #e0e0e0;
-    text-shadow: 0 0 5px rgba(139, 0, 255, 0.5);
-}
-
-.explore-btn {
-    padding: 15px 40px;
-    font-size: 1.1rem;
-    font-weight: bold;
-    background: linear-gradient(45deg, #8b00ff, #ff0078);
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    transition: all 0.3s ease;
-    box-shadow: 0 0 20px rgba(139, 0, 255, 0.5);
-}
-
-.explore-btn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 30px rgba(255, 0, 120, 0.8);
-}
-
-/* ===== PORTAL REALISTA MADRE (FUEGO) ===== */
-.portal {
-    width: 350px;
-    height: 350px;
-    margin: 0 auto;
-    position: relative;
-    perspective: 1000px;
-}
-
-/* Contenedor del portal con efecto fuego realista */
-.portal-inner {
-    width: 100%;
-    height: 100%;
-    position: relative;
-    border-radius: 50%;
-    background: 
-        radial-gradient(circle at 35% 35%, #ffff99 0%, #ffcc00 15%, #ff8800 30%, #ff4400 45%, #cc2200 60%, #661100 80%, #1a0000 100%);
-    box-shadow: 
-        0 0 60px #ff6600,
-        0 0 100px #ff3300,
-        0 0 150px rgba(255, 100, 0, 0.8),
-        inset 0 0 80px rgba(255, 200, 0, 0.4),
-        inset -30px -30px 100px rgba(0, 0, 0, 0.9);
-    animation: portal-rotate 12s linear infinite;
+    font-family: 'Courier New', monospace;
     overflow: hidden;
-    filter: drop-shadow(0 0 40px rgba(255, 100, 0, 0.9));
+    position: relative;
 }
 
-/* Capa de turbulencia y fuego */
-.portal-inner::before {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    background: 
-        radial-gradient(ellipse 60% 100% at 50% 0%, rgba(255, 255, 150, 0.6) 0%, transparent 50%),
-        radial-gradient(ellipse 50% 80% at 50% 100%, rgba(255, 100, 0, 0.4) 0%, transparent 60%),
-        radial-gradient(circle at 30% 40%, rgba(255, 200, 0, 0.3) 0%, transparent 40%),
-        radial-gradient(circle at 70% 30%, rgba(255, 100, 0, 0.3) 0%, transparent 40%);
-    animation: portal-turbulence 3s ease-in-out infinite;
-    filter: blur(3px);
-}
-
-/* Ondas dinámicas internas */
-.portal-inner::after {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    background: 
-        repeating-radial-gradient(circle at center, 
-            transparent 0px,
-            rgba(255, 150, 0, 0.1) 10px,
-            transparent 20px,
-            transparent 40px);
-    animation: portal-wave-fire 4s linear infinite;
-}
-
-/* Bordes resplandecientes del portal */
-.portal-border {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    border: 4px solid;
-    border-color: #ff6600;
-    border-radius: 50%;
-    box-shadow: 
-        0 0 40px rgba(255, 100, 0, 1),
-        0 0 80px rgba(255, 50, 0, 0.8),
-        inset 0 0 40px rgba(255, 150, 0, 0.4);
-    animation: portal-fire-glow 2s ease-in-out infinite;
-}
-
-/* Partículas de fuego flotante */
-.portal-particle {
-    position: absolute;
-    background: radial-gradient(circle, #ffff99 0%, #ff8800 50%, transparent 100%);
-    border-radius: 50%;
-    opacity: 0.9;
-    animation: particle-fly 5s ease-in-out infinite;
-    filter: drop-shadow(0 0 15px rgba(255, 100, 0, 0.8));
-}
-
-.portal-particle:nth-child(1) {
-    width: 50px;
-    height: 50px;
-    top: 15%;
-    left: 15%;
-    animation-delay: 0s;
-    animation-duration: 5s;
-}
-
-.portal-particle:nth-child(2) {
-    width: 40px;
-    height: 40px;
-    top: 20%;
-    right: 20%;
-    animation-delay: 1s;
-    animation-duration: 6s;
-}
-
-.portal-particle:nth-child(3) {
-    width: 45px;
-    height: 45px;
-    bottom: 20%;
-    left: 25%;
-    animation-delay: 2s;
-    animation-duration: 7s;
-}
-
-.portal-particle:nth-child(4) {
-    width: 35px;
-    height: 35px;
-    bottom: 15%;
-    right: 18%;
-    animation-delay: 0.5s;
-    animation-duration: 5.5s;
-}
-
-/* Centro del portal con símbolo */
-.portal-center {
-    position: absolute;
-    width: 100%;
-    height: 100%;
+.portal-container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
     display: flex;
-    align-items: center;
+    flex-direction: column;
     justify-content: center;
+    align-items: center;
+    background: radial-gradient(circle at center, #1a0000 0%, #000000 100%);
+}
+
+/* PORTAL MADRE (ESTILO CARNE REALISTA) */
+.madre-portal {
+    position: relative;
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, 
+                #ff3300, 
+                #cc0000, 
+                #4a0000);
+    box-shadow: 
+        0 0 100px rgba(255, 0, 0, 0.8),
+        0 0 200px rgba(255, 50, 0, 0.6),
+        inset 0 0 50px rgba(0,0,0,0.5);
+    animation: palpitar 2s ease-in-out infinite;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+/* Núcleo interno */
+.portal-core {
+    position: absolute;
+    top: 20%;
+    left: 20%;
+    width: 60%;
+    height: 60%;
+    border-radius: 50%;
+    background: radial-gradient(circle, 
+                #ff6600, 
+                #ff2200, 
+                #660000);
+    filter: blur(15px);
+    animation: girarNucleo 8s linear infinite;
+}
+
+/* Venas realistas */
+.portal-venas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        repeating-linear-gradient(45deg, 
+            rgba(80, 0, 0, 0.6) 0px, 
+            rgba(80, 0, 0, 0.6) 2px,
+            transparent 2px,
+            transparent 8px),
+        repeating-linear-gradient(135deg,
+            rgba(150, 0, 0, 0.4) 0px,
+            rgba(150, 0, 0, 0.4) 3px,
+            transparent 3px,
+            transparent 12px);
+    border-radius: 50%;
+    animation: latirVenas 1.5s ease-in-out infinite;
+}
+
+/* Tejido muscular */
+.portal-tejido {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: radial-gradient(circle at 70% 40%,
+                rgba(200, 30, 0, 0.3),
+                rgba(80, 0, 0, 0.7));
+    filter: blur(8px);
+    mix-blend-mode: multiply;
+}
+
+/* Electricidad / Energía del Upside Down */
+.portal-electricidad {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: repeating-radial-gradient(circle at 50% 50%,
+                rgba(255, 100, 0, 0.8) 0px,
+                rgba(255, 0, 0, 0.6) 2px,
+                transparent 4px,
+                transparent 20px);
+    animation: chispas 0.3s infinite;
+}
+
+/* Humo oscuro */
+.portal-smoke {
+    position: absolute;
+    width: 120%;
+    height: 120%;
+    top: -10%;
+    left: -10%;
+    border-radius: 50%;
+    background: radial-gradient(circle, 
+                rgba(0,0,0,0.7) 0%,
+                transparent 70%);
+    filter: blur(20px);
+    animation: flotarHumo 4s ease-in-out infinite;
+}
+
+/* Distorsión ambiental */
+.distortion-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(0deg,
+                rgba(255,0,0,0.05) 0px,
+                rgba(255,0,0,0.05) 2px,
+                transparent 2px,
+                transparent 6px);
+    pointer-events: none;
     z-index: 10;
 }
 
-.portal-symbol {
-    font-size: 6rem;
-    animation: symbol-pulse-fire 2s ease-in-out infinite;
-    text-shadow: 
-        0 0 40px rgba(255, 100, 0, 0.9),
-        0 0 80px rgba(255, 50, 0, 0.7);
-    filter: drop-shadow(0 0 30px rgba(255, 150, 0, 0.9));
-}
-
-/* ===== ANIMACIONES DEL PORTAL DE FUEGO ===== */
-
-@keyframes portal-rotate {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-@keyframes portal-turbulence {
-    0%, 100% {
-        transform: scale(1) rotate(0deg);
-        filter: blur(3px);
-    }
-    25% {
-        transform: scale(1.02) rotate(5deg);
-        filter: blur(2px);
-    }
-    50% {
-        transform: scale(0.98) rotate(-3deg);
-        filter: blur(4px);
-    }
-    75% {
-        transform: scale(1.01) rotate(4deg);
-        filter: blur(2.5px);
-    }
-}
-
-@keyframes portal-wave-fire {
-    0% {
-        transform: scale(1);
-    }
-    50% {
-        transform: scale(1.05);
-    }
-    100% {
-        transform: scale(1);
-    }
-}
-
-@keyframes portal-fire-glow {
-    0%, 100% {
-        box-shadow: 
-            0 0 40px rgba(255, 100, 0, 1),
-            0 0 80px rgba(255, 50, 0, 0.8),
-            inset 0 0 40px rgba(255, 150, 0, 0.4);
-    }
-    50% {
-        box-shadow: 
-            0 0 60px rgba(255, 100, 0, 1),
-            0 0 120px rgba(255, 50, 0, 0.9),
-            inset 0 0 60px rgba(255, 150, 0, 0.6);
-    }
-}
-
-@keyframes particle-fly {
-    0%, 100% {
-        transform: translate(0, 0) scale(1);
-        opacity: 0.9;
-    }
-    25% {
-        transform: translate(40px, -50px) scale(1.2);
-        opacity: 1;
-    }
-    50% {
-        transform: translate(-30px, 60px) scale(0.8);
-        opacity: 0.7;
-    }
-    75% {
-        transform: translate(50px, 30px) scale(1.1);
-        opacity: 0.85;
-    }
-}
-
-@keyframes symbol-pulse-fire {
-    0%, 100% {
-        transform: scale(1);
-        text-shadow: 
-            0 0 40px rgba(255, 100, 0, 0.9),
-            0 0 80px rgba(255, 50, 0, 0.7);
-    }
-    50% {
-        transform: scale(1.15);
-        text-shadow: 
-            0 0 60px rgba(255, 100, 0, 1),
-            0 0 120px rgba(255, 50, 0, 0.9);
-    }
-}
-
-/* ===== SECCIÓN PERSONAJES ===== */
-.personajes-section {
-    background: linear-gradient(180deg, rgba(45, 0, 82, 0.8) 0%, rgba(26, 0, 51, 0.8) 100%);
-}
-
-.characters-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2.5rem;
-}
-
-.character-card {
-    background: rgba(139, 0, 255, 0.1);
-    border: 2px solid #8b00ff;
-    border-radius: 10px;
-    padding: 2rem;
-    text-align: center;
-    transition: all 0.3s ease;
-    cursor: pointer;
-    backdrop-filter: blur(5px);
-    position: relative;
-    overflow: hidden;
-}
-
-.character-card::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(255, 0, 120, 0.3), transparent);
-    animation: shimmer 3s infinite;
-    opacity: 0;
-}
-
-.character-card:hover::before {
-    opacity: 1;
-}
-
-@keyframes shimmer {
-    0%, 100% { transform: translate(-20%, -20%); }
-    50% { transform: translate(20%, 20%); }
-}
-
-.character-card:hover {
-    background: rgba(255, 0, 120, 0.15);
-    border-color: #ff0078;
-    transform: translateY(-10px);
-    box-shadow: 0 10px 30px rgba(255, 0, 120, 0.5);
-}
-
-.character-image {
-    font-size: 4rem;
-    margin-bottom: 1rem;
-    animation: float 3s ease-in-out infinite;
-}
-
-@keyframes float {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-10px); }
-}
-
-.character-card h3 {
-    font-size: 1.5rem;
-    color: #ff0078;
-    margin-bottom: 0.5rem;
-    text-shadow: 0 0 10px #ff0078;
-}
-
-.character-role {
-    color: #8b00ff;
-    font-style: italic;
-    margin-bottom: 1rem;
-    font-size: 0.95rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-.character-desc {
-    color: #d0d0d0;
-    line-height: 1.6;
-}
-
-/* ===== SECCIÓN CURIOSIDADES ===== */
-.curiosidades-section {
-    background: linear-gradient(180deg, rgba(26, 0, 51, 0.8) 0%, rgba(45, 0, 82, 0.8) 100%);
-}
-
-.curiosidades-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-}
-
-.curiosity-card {
-    background: linear-gradient(135deg, rgba(139, 0, 255, 0.1), rgba(255, 0, 120, 0.05));
-    border-left: 4px solid #8b00ff;
-    border-radius: 5px;
-    padding: 2rem;
-    transition: all 0.3s ease;
-    backdrop-filter: blur(5px);
-    position: relative;
-}
-
-.curiosity-card::after {
-    content: '';
-    position: absolute;
+/* Luces parpadeantes */
+.flicker-lights {
+    position: fixed;
     top: 0;
-    right: 0;
+    left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(135deg, transparent, rgba(255, 0, 120, 0.3));
-    border-radius: 5px;
-    opacity: 0;
-    transition: opacity 0.3s ease;
+    background: radial-gradient(circle at var(--x, 50%) var(--y, 50%),
+                rgba(255, 50, 0, 0.3) 0%,
+                transparent 70%);
     pointer-events: none;
+    z-index: 5;
+    animation: flicker 0.15s infinite;
 }
 
-.curiosity-card:hover {
-    border-left-color: #ff0078;
-    background: linear-gradient(135deg, rgba(255, 0, 120, 0.15), rgba(139, 0, 255, 0.1));
-    transform: translateX(10px);
-    box-shadow: 0 5px 20px rgba(139, 0, 255, 0.3);
-}
-
-.curiosity-card:hover::after {
-    opacity: 1;
-}
-
-.curiosity-card h3 {
-    color: #ff0078;
-    margin-bottom: 1rem;
-    font-size: 1.3rem;
-    text-shadow: 0 0 10px rgba(255, 0, 120, 0.5);
-}
-
-.curiosity-card p {
-    color: #d0d0d0;
-    line-height: 1.7;
-    font-size: 0.95rem;
-}
-
-/* ===== SECCIÓN CREATIVIDAD ===== */
-.creatividad-section {
-    background: linear-gradient(180deg, rgba(45, 0, 82, 0.8) 0%, rgba(26, 0, 51, 0.8) 100%);
-}
-
-.creativity-content {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2rem;
-    margin-bottom: 4rem;
-}
-
-.creativity-card {
-    background: rgba(139, 0, 255, 0.1);
-    border: 2px solid #8b00ff;
-    border-radius: 10px;
-    padding: 2rem;
+/* Texto estilizado */
+.portal-text {
     text-align: center;
-    transition: all 0.3s ease;
-    cursor: pointer;
-    backdrop-filter: blur(5px);
+    margin-top: 50px;
+    color: #ff4400;
+    text-shadow: 0 0 10px red;
+    z-index: 20;
 }
 
-.creativity-card:hover {
-    background: rgba(255, 0, 120, 0.15);
-    border-color: #ff0078;
-    transform: scale(1.05);
-    box-shadow: 0 10px 30px rgba(255, 0, 120, 0.5);
-}
-
-.creativity-card h3 {
-    color: #ff0078;
-    margin-bottom: 1rem;
-    font-size: 1.3rem;
-    text-shadow: 0 0 10px #ff0078;
-}
-
-.creativity-card p {
-    color: #d0d0d0;
-    line-height: 1.6;
-}
-
-/* Sección de comunidad */
-.community-section {
-    background: rgba(139, 0, 255, 0.15);
-    border: 2px solid #8b00ff;
-    border-radius: 10px;
-    padding: 3rem;
-    text-align: center;
-    backdrop-filter: blur(5px);
-}
-
-.community-section h3 {
-    font-size: 2rem;
-    color: #ff0078;
-    margin-bottom: 1rem;
-    text-shadow: 0 0 10px #ff0078;
-}
-
-.community-section p {
-    color: #d0d0d0;
-    margin-bottom: 2rem;
-    font-size: 1.1rem;
-}
-
-/* Formulario */
-.contact-form {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    max-width: 600px;
-    margin: 0 auto;
-}
-
-.contact-form input,
-.contact-form textarea {
-    padding: 12px 15px;
-    background: rgba(255, 255, 255, 0.1);
-    border: 2px solid #8b00ff;
-    border-radius: 5px;
-    color: #fff;
-    font-family: 'Courier New', monospace;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-    backdrop-filter: blur(5px);
-}
-
-.contact-form input::placeholder,
-.contact-form textarea::placeholder {
-    color: rgba(255, 255, 255, 0.5);
-}
-
-.contact-form input:focus,
-.contact-form textarea:focus {
-    outline: none;
-    border-color: #ff0078;
-    background: rgba(255, 0, 120, 0.1);
-    box-shadow: 0 0 15px rgba(255, 0, 120, 0.5);
-}
-
-.contact-form textarea {
-    resize: vertical;
-    min-height: 120px;
-}
-
-.submit-btn {
-    padding: 12px 30px;
-    background: linear-gradient(45deg, #8b00ff, #ff0078);
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-size: 1rem;
+.glitch {
+    font-size: 3rem;
     font-weight: bold;
+    position: relative;
+    animation: glitch 1s infinite;
+}
+
+.heartbeat {
+    width: 30px;
+    height: 30px;
+    background: red;
+    margin: 20px auto;
+    border-radius: 50%;
+    animation: latido 1s infinite;
+    box-shadow: 0 0 20px red;
+}
+
+button.portal-trigger {
+    background: #220000;
+    border: 2px solid #ff3300;
+    color: #ff6600;
+    font-family: monospace;
+    font-size: 1.5rem;
+    padding: 12px 28px;
+    margin-top: 30px;
     cursor: pointer;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    transition: all 0.3s ease;
-    box-shadow: 0 0 15px rgba(139, 0, 255, 0.5);
+    z-index: 30;
+    transition: 0.2s;
+    box-shadow: 0 0 15px red;
 }
 
-.submit-btn:hover {
+button.portal-trigger:hover {
+    background: #ff3300;
+    color: black;
+    box-shadow: 0 0 30px #ff6600;
     transform: scale(1.05);
-    box-shadow: 0 0 25px rgba(255, 0, 120, 0.8);
 }
 
-/* Footer */
-.footer {
-    background: rgba(10, 0, 20, 0.95);
-    border-top: 3px solid #8b00ff;
-    padding: 2rem;
-    text-align: center;
-    color: #b0b0b0;
-    margin-top: 3rem;
+/* ANIMACIONES */
+@keyframes palpitar {
+    0% { transform: scale(1); opacity: 0.9; }
+    50% { transform: scale(1.05); opacity: 1; }
+    100% { transform: scale(1); opacity: 0.9; }
 }
 
-.footer p {
-    margin: 0.5rem 0;
-    font-size: 0.9rem;
+@keyframes girarNucleo {
+    0% { transform: rotate(0deg) scale(1); }
+    50% { transform: rotate(180deg) scale(1.2); filter: blur(20px);}
+    100% { transform: rotate(360deg) scale(1); }
 }
 
-/* ===== RESPONSIVE ===== */
-@media (max-width: 768px) {
-    .nav-menu {
-        flex-direction: column;
-        gap: 1rem;
-    }
+@keyframes latirVenas {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+}
 
-    .content-wrapper {
-        grid-template-columns: 1fr;
-    }
+@keyframes chispas {
+    0% { opacity: 0.8; }
+    100% { opacity: 1; }
+}
 
-    .inicio-text h2 {
-        font-size: 2rem;
-    }
+@keyframes flotarHumo {
+    0% { transform: scale(1) translate(0,0); opacity: 0.6; }
+    50% { transform: scale(1.2) translate(10px,-10px); opacity: 0.9; }
+    100% { transform: scale(1) translate(0,0); opacity: 0.6; }
+}
 
-    .section-title {
-        font-size: 2rem;
-    }
+@keyframes glitch {
+    0% { text-shadow: -2px 0 red, 2px 0 blue; }
+    50% { text-shadow: 2px 0 red, -2px 0 blue; }
+    100% { text-shadow: -2px 0 red, 2px 0 blue; }
+}
 
-    .characters-grid,
-    .curiosidades-grid,
-    .creativity-content {
-        grid-template-columns: 1fr;
-    }
+@keyframes latido {
+    0%, 100% { transform: scale(1); opacity: 0.7; }
+    50% { transform: scale(1.3); opacity: 1; background: #ff6600; }
+}
 
-    .portal {
+@keyframes flicker {
+    0% { opacity: 0.3; }
+    100% { opacity: 0.8; }
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .madre-portal {
         width: 280px;
         height: 280px;
     }
-
-    .portal-symbol {
-        font-size: 4rem;
+    .glitch {
+        font-size: 1.8rem;
     }
-
-    .logo {
-        font-size: 1.5rem;
-    }
-
-    .contact-form {
-        max-width: 100%;
+    button.portal-trigger {
+        font-size: 1rem;
+        padding: 8px 18px;
     }
 }
