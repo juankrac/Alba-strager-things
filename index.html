@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Stranger Things - Portal Madre | Upside Down</title>
+    <title>Stranger Things - Portal Madre</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -17,93 +17,16 @@
             <div class="portal-smoke"></div>
         </div>
 
-        <!-- Efecto de distorsión -->
         <div class="distortion-overlay"></div>
-        
-        <!-- Luces parpadeantes -->
         <div class="flicker-lights"></div>
 
-        <!-- Texto debajo del portal -->
         <div class="portal-text">
             <h1 class="glitch">BIENVENIDOS AL MUNDO DE STRANGER THINGS</h1>
             <p>“No todos sobreviven...”</p>
             <div class="heartbeat"></div>
         </div>
 
-        <!-- Botón -->
-        <button class="portal-trigger" id="portalTrigger">⚡ ABRIR PORTAL ⚡</button>
-    </div>
-
-    <!-- TARJETAS FLOTANTES (se muestran al abrir portal) -->
-    <div class="tarjetas-overlay" id="tarjetasOverlay">
-        <div class="tarjeta" onclick="mostrarModal('inicio')">
-            <span class="tarjeta-icono">👻</span>
-            <span class="tarjeta-texto">INICIO</span>
-        </div>
-        <div class="tarjeta" onclick="mostrarModal('personajes')">
-            <span class="tarjeta-icono">👥</span>
-            <span class="tarjeta-texto">PERSONAJES</span>
-        </div>
-        <div class="tarjeta" onclick="mostrarModal('curiosidades')">
-            <span class="tarjeta-icono">📚</span>
-            <span class="tarjeta-texto">CURIOSIDADES</span>
-        </div>
-        <div class="tarjeta" onclick="mostrarModal('creatividad')">
-            <span class="tarjeta-icono">🎨</span>
-            <span class="tarjeta-texto">CREATIVIDAD</span>
-        </div>
-    </div>
-
-    <!-- MODALES -->
-    <div id="modalInicio" class="modal">
-        <div class="modal-box">
-            <span class="cerrar" onclick="cerrarModal('modalInicio')">&times;</span>
-            <h2>👻 INICIO</h2>
-            <p>Bienvenido al Upside Down, un mundo oscuro lleno de misterios.</p>
-            <p>Hawkins, 1983. Todo comenzó con la desaparición de Will Byers.</p>
-        </div>
-    </div>
-
-    <div id="modalPersonajes" class="modal">
-        <div class="modal-box">
-            <span class="cerrar" onclick="cerrarModal('modalPersonajes')">&times;</span>
-            <h2>👥 PERSONAJES</h2>
-            <ul>
-                <li><strong>Eleven</strong> - Poderes telequinéticos</li>
-                <li><strong>Mike Wheeler</strong> - El líder</li>
-                <li><strong>Dustin Henderson</strong> - El inteligente</li>
-                <li><strong>Lucas Sinclair</strong> - El estratega</li>
-                <li><strong>Will Byers</strong> - El superviviente</li>
-                <li><strong>Max Mayfield</strong> - La patinadora</li>
-                <li><strong>Jim Hopper</strong> - El jefe</li>
-                <li><strong>Joyce Byers</strong> - La madre</li>
-            </ul>
-        </div>
-    </div>
-
-    <div id="modalCuriosidades" class="modal">
-        <div class="modal-box">
-            <span class="cerrar" onclick="cerrarModal('modalCuriosidades')">&times;</span>
-            <h2>📚 CURIOSIDADES</h2>
-            <ul>
-                <li>La serie iba a llamarse "Montauk"</li>
-                <li>Inspirada en películas de los 80</li>
-                <li>El Demogorgon era un actor con máscara</li>
-                <li>Los personajes juegan D&D</li>
-            </ul>
-        </div>
-    </div>
-
-    <div id="modalCreatividad" class="modal">
-        <div class="modal-box">
-            <span class="cerrar" onclick="cerrarModal('modalCreatividad')">&times;</span>
-            <h2>🎨 CREATIVIDAD</h2>
-            <form onsubmit="enviarFormulario(event)">
-                <input type="text" placeholder="Tu nombre" id="nombre" required>
-                <textarea placeholder="Comparte tu arte o teoría..." id="mensaje" rows="3"></textarea>
-                <button type="submit">ENVIAR</button>
-            </form>
-        </div>
+        <button class="portal-trigger" id="abrirPortalBtn">⚡ ABRIR PORTAL ⚡</button>
     </div>
 
     <script src="script.js"></script>
