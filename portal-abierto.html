@@ -112,19 +112,42 @@
     </div>
 </div>
 
-    <div id="modalCreatividad" class="modal">
-        <div class="modal-contenido">
-            <span class="cerrar-modal">&times;</span>
-            <h2>🎨 CREATIVIDAD</h2>
-            <form id="formCreativo">
-                <input type="text" placeholder="Tu nombre" required>
-                <input type="email" placeholder="Tu email">
-                <textarea placeholder="Comparte tu arte, historia o teoría sobre Stranger Things..." rows="4"></textarea>
-                <button type="submit">Enviar al Upside Down 🌑</button>
-            </form>
-            <p id="mensajeForm" style="color: #ff6600; margin-top: 10px;"></p>
+  <div id="modalCreatividad" class="modal">
+    <div class="modal-contenido modal-dibujo">
+        <span class="cerrar-modal">&times;</span>
+        <h2>🎨 ESTUDIO DE DIBUJO</h2>
+        
+        <!-- Círculos de colores -->
+        <div class="paleta-colores">
+            <div class="color-btn" data-color="#ff0000" style="background: #ff0000;" title="Rojo"></div>
+            <div class="color-btn" data-color="#ff6600" style="background: #ff6600;" title="Naranja"></div>
+            <div class="color-btn" data-color="#ffdd00" style="background: #ffdd00;" title="Amarillo"></div>
+            <div class="color-btn" data-color="#00cc00" style="background: #00cc00;" title="Verde"></div>
+            <div class="color-btn" data-color="#0066ff" style="background: #0066ff;" title="Azul"></div>
+            <div class="color-btn" data-color="#9900ff" style="background: #9900ff;" title="Morado"></div>
+            <div class="color-btn" data-color="#ff3399" style="background: #ff3399;" title="Rosa"></div>
         </div>
+        
+        <!-- Lienzo para dibujar -->
+        <canvas id="lienzoDibujo" width="400" height="400" class="lienzo"></canvas>
+        
+        <!-- Botones de control -->
+        <div class="botones-dibujo">
+            <button id="limpiarLienzo" class="btn-dibujo">🗑️ LIMPIAR</button>
+            <button id="descargarDibujo" class="btn-dibujo">💾 GUARDAR DIBUJO</button>
+        </div>
+        
+        <!-- Formulario de envío -->
+        <h3 style="margin-top: 20px;">📤 COMPARTE TU CREACIÓN</h3>
+        <form id="formCreativo">
+            <input type="text" placeholder="Tu nombre" required>
+            <input type="email" placeholder="Tu email">
+            <textarea placeholder="Describe tu dibujo o comparte una teoría..." rows="3"></textarea>
+            <button type="submit">Enviar al Upside Down 🌑</button>
+        </form>
+        <p id="mensajeForm" style="color: #ff6600; margin-top: 10px;"></p>
     </div>
+</div>
 
     <script src="portal-abierto.js"></script>
 </body>
