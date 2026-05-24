@@ -8,7 +8,7 @@
 </head>
 <body>
     <div class="portal-container">
-        <!-- Portal Madre (estilo carne realista) -->
+        <!-- Portal Madre -->
         <div class="madre-portal" id="madrePortal">
             <div class="portal-core"></div>
             <div class="portal-venas"></div>
@@ -17,100 +17,92 @@
             <div class="portal-smoke"></div>
         </div>
 
-        <!-- TARJETAS DE APARTADOS (NUEVO) -->
-        <div class="tarjetas-container" id="tarjetasContainer">
-            <div class="tarjeta" data-apartado="inicio">
-                <div class="tarjeta-icono">👻</div>
-                <h3>INICIO</h3>
-                <p>Bienvenido al Upside Down</p>
-            </div>
-            <div class="tarjeta" data-apartado="personajes">
-                <div class="tarjeta-icono">👥</div>
-                <h3>PERSONAJES</h3>
-                <p>Conoce a los héroes</p>
-            </div>
-            <div class="tarjeta" data-apartado="curiosidades">
-                <div class="tarjeta-icono">📚</div>
-                <h3>CURIOSIDADES</h3>
-                <p>Datos fascinantes</p>
-            </div>
-            <div class="tarjeta" data-apartado="creatividad">
-                <div class="tarjeta-icono">🎨</div>
-                <h3>CREATIVIDAD</h3>
-                <p>Comparte tu arte</p>
-            </div>
-        </div>
-
-        <!-- Efecto de distorsión ambiental -->
+        <!-- Efecto de distorsión -->
         <div class="distortion-overlay"></div>
         
-        <!-- Luces parpadeantes estilo Hawkins Lab -->
+        <!-- Luces parpadeantes -->
         <div class="flicker-lights"></div>
 
         <!-- Texto debajo del portal -->
         <div class="portal-text">
-            <h1 class="glitch" data-text="BIENVENIDOS AL MUNDO DE STRANGER THINGS">BIENVENIDOS AL MUNDO DE STRANGER THINGS</h1>
+            <h1 class="glitch">BIENVENIDOS AL MUNDO DE STRANGER THINGS</h1>
             <p>“No todos sobreviven...”</p>
             <div class="heartbeat"></div>
         </div>
 
-        <!-- Botón de interacción para abrir/cerrar el portal -->
+        <!-- Botón -->
         <button class="portal-trigger" id="portalTrigger">⚡ ABRIR PORTAL ⚡</button>
     </div>
 
-    <!-- MODALES PARA CADA APARTADO (NUEVO) -->
+    <!-- TARJETAS FLOTANTES (se muestran al abrir portal) -->
+    <div class="tarjetas-overlay" id="tarjetasOverlay">
+        <div class="tarjeta" onclick="mostrarModal('inicio')">
+            <span class="tarjeta-icono">👻</span>
+            <span class="tarjeta-texto">INICIO</span>
+        </div>
+        <div class="tarjeta" onclick="mostrarModal('personajes')">
+            <span class="tarjeta-icono">👥</span>
+            <span class="tarjeta-texto">PERSONAJES</span>
+        </div>
+        <div class="tarjeta" onclick="mostrarModal('curiosidades')">
+            <span class="tarjeta-icono">📚</span>
+            <span class="tarjeta-texto">CURIOSIDADES</span>
+        </div>
+        <div class="tarjeta" onclick="mostrarModal('creatividad')">
+            <span class="tarjeta-icono">🎨</span>
+            <span class="tarjeta-texto">CREATIVIDAD</span>
+        </div>
+    </div>
+
+    <!-- MODALES -->
     <div id="modalInicio" class="modal">
-        <div class="modal-contenido">
-            <span class="cerrar-modal">&times;</span>
+        <div class="modal-box">
+            <span class="cerrar" onclick="cerrarModal('modalInicio')">&times;</span>
             <h2>👻 INICIO</h2>
             <p>Bienvenido al Upside Down, un mundo oscuro lleno de misterios.</p>
-            <p>Hawkins, 1983. Todo comenzó con la desaparición de Will Byers...</p>
-            <p>Desde entonces, un grupo de niños descubrió que hay un mundo paralelo lleno de criaturas y peligros.</p>
+            <p>Hawkins, 1983. Todo comenzó con la desaparición de Will Byers.</p>
         </div>
     </div>
 
     <div id="modalPersonajes" class="modal">
-        <div class="modal-contenido">
-            <span class="cerrar-modal">&times;</span>
+        <div class="modal-box">
+            <span class="cerrar" onclick="cerrarModal('modalPersonajes')">&times;</span>
             <h2>👥 PERSONAJES</h2>
             <ul>
                 <li><strong>Eleven</strong> - Poderes telequinéticos</li>
-                <li><strong>Mike Wheeler</strong> - El líder del grupo</li>
+                <li><strong>Mike Wheeler</strong> - El líder</li>
                 <li><strong>Dustin Henderson</strong> - El inteligente</li>
                 <li><strong>Lucas Sinclair</strong> - El estratega</li>
                 <li><strong>Will Byers</strong> - El superviviente</li>
                 <li><strong>Max Mayfield</strong> - La patinadora</li>
-                <li><strong>Jim Hopper</strong> - El jefe de policía</li>
+                <li><strong>Jim Hopper</strong> - El jefe</li>
                 <li><strong>Joyce Byers</strong> - La madre</li>
             </ul>
         </div>
     </div>
 
     <div id="modalCuriosidades" class="modal">
-        <div class="modal-contenido">
-            <span class="cerrar-modal">&times;</span>
+        <div class="modal-box">
+            <span class="cerrar" onclick="cerrarModal('modalCuriosidades')">&times;</span>
             <h2>📚 CURIOSIDADES</h2>
             <ul>
-                <li>La serie iba a llamarse "Montauk" originalmente</li>
-                <li>Los hermanos Duffer se inspiraron en películas de los 80</li>
-                <li>El Demogorgon fue creado sin CGI, usaron un actor con prótesis</li>
-                <li>Los personajes principales están basados en jugadores de D&D</li>
-                <li>La serie ha ganado más de 50 premios internacionales</li>
+                <li>La serie iba a llamarse "Montauk"</li>
+                <li>Inspirada en películas de los 80</li>
+                <li>El Demogorgon era un actor con máscara</li>
+                <li>Los personajes juegan D&D</li>
             </ul>
         </div>
     </div>
 
     <div id="modalCreatividad" class="modal">
-        <div class="modal-contenido">
-            <span class="cerrar-modal">&times;</span>
+        <div class="modal-box">
+            <span class="cerrar" onclick="cerrarModal('modalCreatividad')">&times;</span>
             <h2>🎨 CREATIVIDAD</h2>
-            <form id="formCreativo">
-                <input type="text" placeholder="Tu nombre" required>
-                <input type="email" placeholder="Tu email">
-                <textarea placeholder="Comparte tu arte, historia o teoría sobre Stranger Things..." rows="4"></textarea>
-                <button type="submit">Enviar al Upside Down 🌑</button>
+            <form onsubmit="enviarFormulario(event)">
+                <input type="text" placeholder="Tu nombre" id="nombre" required>
+                <textarea placeholder="Comparte tu arte o teoría..." id="mensaje" rows="3"></textarea>
+                <button type="submit">ENVIAR</button>
             </form>
-            <p id="mensajeForm" style="color: #ff6600; margin-top: 10px;"></p>
         </div>
     </div>
 
