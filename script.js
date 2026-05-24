@@ -1,7 +1,7 @@
-// Portal Madre Interactivo
 const portal = document.getElementById('madrePortal');
 const triggerBtn = document.getElementById('portalTrigger');
-let portalAbierto = true;
+const tarjetasContainer = document.getElementById('tarjetasContainer');
+let portalAbierto = false;
 
 // Seguimiento del mouse para luces parpadeantes
 document.addEventListener('mousemove', (e) => {
@@ -11,41 +11,43 @@ document.addEventListener('mousemove', (e) => {
     document.documentElement.style.setProperty('--y', `${y}%`);
 });
 
-// Efecto de abrir/cerrar portal con más intensidad
+// Abrir/Cerrar portal y mostrar/ocultar tarjetas
 triggerBtn.addEventListener('click', () => {
-    if (portalAbierto) {
-        // Cerrar portal
+    if (!portalAbierto) {
+        // ABRIR PORTAL - mostrar tarjetas
+        portal.style.animation = 'palpitar 1s ease-in-out infinite';
+        portal.style.transform = 'scale(1.1)';
+        portal.style.opacity = '1';
+        portal.style.filter = 'blur(0px)';
+        tarjetasContainer.classList.add('mostrar');
+        triggerBtn.textContent = '🌀 CERRAR PORTAL 🌀';
+        portalAbierto = true;
+        
+        // Efecto de sacudida al abrir
+        document.body.style.animation = 'shakePortal 0.3s ease-in-out';
+        setTimeout(() => {
+            document.body.style.animation = '';
+        }, 300);
+        
+        console.log('⚡ PORTAL ABIERTO - Las tarjetas han aparecido ⚡');
+    } else {
+        // CERRAR PORTAL - ocultar tarjetas
         portal.style.animation = 'none';
         portal.style.transform = 'scale(0.3)';
         portal.style.opacity = '0';
         portal.style.filter = 'blur(30px)';
-        triggerBtn.textContent = '🌀 ABRIR PORTAL 🌀';
+        tarjetasContainer.classList.remove('mostrar');
+        triggerBtn.textContent = '⚡ ABRIR PORTAL ⚡';
         portalAbierto = false;
         
-        // Sonido imaginario (solo consola)
-        console.log('🌀 Portal Madre cerrado...');
-    } else {
-        // Abrir portal con furia
-        portal.style.animation = 'palpitar 1s ease-in-out infinite';
-        portal.style.transform = 'scale(1)';
-        portal.style.opacity = '1';
-        portal.style.filter = 'blur(0px)';
-        triggerBtn.textContent = '⚡ CERRAR PORTAL ⚡';
-        portalAbierto = true;
-        
-        // Efecto de sacudida en toda la pantalla
-        document.body.style.animation = 'shake 0.3s ease-in-out';
-        setTimeout(() => {
-            document.body.style.animation = '';
-        }, 300);
-        console.log('⚡ PORTAL MADRE ABIERTO ⚡');
+        console.log('🌀 PORTAL CERRADO 🌀');
     }
 });
 
 // Efecto de sacudida
 const shakeStyle = document.createElement('style');
 shakeStyle.textContent = `
-    @keyframes shake {
+    @keyframes shakePortal {
         0%, 100% { transform: translate(0, 0); }
         25% { transform: translate(-5px, 5px); }
         50% { transform: translate(5px, -5px); }
@@ -54,35 +56,74 @@ shakeStyle.textContent = `
 `;
 document.head.appendChild(shakeStyle);
 
-// Interacción con el portal (efecto de "tocar la carne")
+// Interacción con el portal
 portal.addEventListener('mouseenter', () => {
-    portal.style.boxShadow = '0 0 180px rgba(255, 50, 0, 0.9), inset 0 0 60px rgba(0,0,0,0.8)';
-    portal.style.transform = 'scale(1.02)';
+    if (portalAbierto) {
+        portal.style.boxShadow = '0 0 180px rgba(255, 50, 0, 0.9), inset 0 0 60px rgba(0,0,0,0.8)';
+    }
 });
 
 portal.addEventListener('mouseleave', () => {
-    portal.style.boxShadow = '0 0 100px rgba(255, 0, 0, 0.8), 0 0 200px rgba(255, 50, 0, 0.6)';
-    portal.style.transform = 'scale(1)';
+    if (portalAbierto) {
+        portal.style.boxShadow = '0 0 100px rgba(255, 0, 0, 0.8), 0 0 200px rgba(255, 50, 0, 0.6)';
+    }
 });
 
-// Efecto de sonido imaginario al hacer clic en el portal
-portal.addEventListener('click', () => {
-    console.log('💀 Has tocado el portal... algo se mueve del otro lado 💀');
-    // Simular latido más fuerte
-    const heartbeat = document.querySelector('.heartbeat');
-    heartbeat.style.animation = 'none';
-    setTimeout(() => {
-        heartbeat.style.animation = 'latido 0.5s infinite';
-    }, 10);
-    setTimeout(() => {
-        heartbeat.style.animation = 'latido 1s infinite';
-    }, 1000);
+// Mostrar modales al hacer clic en las tarjetas
+const tarjetas = document.querySelectorAll('.tarjeta');
+const modales = {
+    inicio: document.getElementById('modalInicio'),
+    personajes: document.getElementById('modalPersonajes'),
+    curiosidades: document.getElementById('modalCuriosidades'),
+    creatividad: document.getElementById('modalCreatividad')
+};
+
+tarjetas.forEach(tarjeta => {
+    tarjeta.addEventListener('click', () => {
+        const apartado = tarjeta.getAttribute('data-apartado');
+        if (modales[apartado]) {
+            modales[apartado].style.display = 'block';
+        }
+    });
 });
 
-// Easter Egg: Código secreto (Ctrl + D)
+// Cerrar modales
+const cerrarBtns = document.querySelectorAll('.cerrar-modal');
+cerrarBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+        Object.values(modales).forEach(modal => {
+            if (modal) modal.style.display = 'none';
+        });
+    });
+});
+
+// Cerrar modal al hacer clic fuera
+window.addEventListener('click', (e) => {
+    if (e.target.classList.contains('modal')) {
+        e.target.style.display = 'none';
+    }
+});
+
+// Formulario de creatividad
+const form = document.getElementById('formCreativo');
+const mensajeForm = document.getElementById('mensajeForm');
+
+if (form) {
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        mensajeForm.textContent = '✨ ¡Tu creación ha cruzado el portal! ✨';
+        mensajeForm.style.color = '#ff6600';
+        form.reset();
+        setTimeout(() => {
+            mensajeForm.textContent = '';
+        }, 3000);
+    });
+}
+
+// Easter Egg
 document.addEventListener('keydown', (e) => {
     if (e.ctrlKey && e.key === 'd') {
-        alert('💀✨ ¡HAS DESCUBIERTO EL MENSAJE SECRETO! ✨💀\n"El Vecna está mirando desde el otro lado..."');
+        alert('💀✨ ¡HAS DESCUBIERTO EL MENSAJE SECRETO! ✨💀\n"Vecna está mirando desde el otro lado..."');
         document.body.style.filter = 'hue-rotate(180deg)';
         setTimeout(() => {
             document.body.style.filter = '';
@@ -90,7 +131,7 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
-// Partículas rojas que caen (opcional realismo extra)
+// Partículas rojas que caen
 function crearParticula() {
     const particula = document.createElement('div');
     particula.classList.add('particula');
