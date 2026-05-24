@@ -463,3 +463,14 @@ body {
     border: 3px solid white !important;
     box-shadow: 0 0 20px currentColor;
 }
+.lienzo {
+    background: #ffffff;
+    border: 3px solid #ff3300;
+    border-radius: 10px;
+    cursor: crosshair;
+    margin: 10px auto;
+    display: block;
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+    width: 250px;
+    height: 250px;
+}
