@@ -474,3 +474,138 @@ body {
     width: 250px;
     height: 250px;
 }
+/* Estudio de dibujo - NUEVO DISEÑO */
+.modal-dibujo {
+    max-width: 700px;
+    text-align: center;
+}
+
+.dibujo-layout {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    margin: 20px 0;
+    flex-wrap: wrap;
+}
+
+/* Paleta vertical */
+.paleta-vertical {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 15px 10px;
+    border-radius: 30px;
+    border: 1px solid #ff3300;
+}
+
+.color-btn {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 0 5px rgba(0,0,0,0.5);
+    border: 2px solid #ff3300;
+}
+
+.color-btn:hover {
+    transform: scale(1.15);
+    box-shadow: 0 0 15px currentColor;
+}
+
+.color-btn.activo {
+    transform: scale(1.15);
+    border: 3px solid white;
+    box-shadow: 0 0 20px currentColor;
+}
+
+/* Lienzo nuevo */
+.lienzo-nuevo {
+    background: #ffffff;
+    border: 3px solid #ff3300;
+    border-radius: 15px;
+    cursor: crosshair;
+    box-shadow: 0 0 25px rgba(255, 0, 0, 0.4);
+    transition: 0.2s;
+}
+
+.lienzo-nuevo:hover {
+    box-shadow: 0 0 35px rgba(255, 0, 0, 0.7);
+}
+
+/* Botones nuevos y bonitos */
+.botones-dibujo-nuevos {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin: 20px 0 10px;
+}
+
+.btn-dibujo-nuevo {
+    background: linear-gradient(135deg, #2a0000, #1a0000);
+    border: 2px solid #ff3300;
+    color: #ff6600;
+    font-family: monospace;
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 10px 25px;
+    cursor: pointer;
+    transition: all 0.3s;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 0 10px rgba(255, 51, 0, 0.3);
+}
+
+.btn-dibujo-nuevo:hover {
+    background: linear-gradient(135deg, #ff3300, #cc0000);
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 0 25px #ff3300;
+}
+
+.btn-icono {
+    font-size: 1.2rem;
+}
+
+.btn-enviar {
+    background: linear-gradient(135deg, #ff3300, #cc0000);
+    color: white;
+    border: none;
+    padding: 12px;
+    cursor: pointer;
+    font-weight: bold;
+    width: 100%;
+    font-size: 1rem;
+    font-family: monospace;
+    transition: 0.3s;
+    border-radius: 50px;
+    margin-top: 10px;
+}
+
+.btn-enviar:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 20px #ff3300;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .dibujo-layout {
+        gap: 15px;
+    }
+    .color-btn {
+        width: 35px;
+        height: 35px;
+    }
+    .lienzo-nuevo {
+        width: 200px;
+        height: 200px;
+    }
+    .btn-dibujo-nuevo {
+        padding: 6px 15px;
+        font-size: 0.8rem;
+    }
+}
