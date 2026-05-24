@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Stranger Things - El Upside Down</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="portal-container">
+        <!-- Portal Madre (abierto) -->
+        <div class="madre-portal portal-abierto" id="madrePortal">
+            <div class="portal-core"></div>
+            <div class="portal-venas"></div>
+            <div class="portal-tejido"></div>
+            <div class="portal-electricidad"></div>
+            <div class="portal-smoke"></div>
+        </div>
+
+        <div class="distortion-overlay"></div>
+        <div class="flicker-lights"></div>
+
+        <!-- TARJETAS DE APARTADOS -->
+        <div class="tarjetas-container">
+            <div class="tarjeta" data-modal="inicio">
+                <div class="tarjeta-icono">👻</div>
+                <h3>INICIO</h3>
+                <p>Bienvenido al Upside Down</p>
+            </div>
+            <div class="tarjeta" data-modal="personajes">
+                <div class="tarjeta-icono">👥</div>
+                <h3>PERSONAJES</h3>
+                <p>Conoce a los héroes</p>
+            </div>
+            <div class="tarjeta" data-modal="curiosidades">
+                <div class="tarjeta-icono">📚</div>
+                <h3>CURIOSIDADES</h3>
+                <p>Datos fascinantes</p>
+            </div>
+            <div class="tarjeta" data-modal="creatividad">
+                <div class="tarjeta-icono">🎨</div>
+                <h3>CREATIVIDAD</h3>
+                <p>Comparte tu arte</p>
+            </div>
+        </div>
+
+        <div class="portal-text">
+            <h1 class="glitch">BIENVENIDOS AL MUNDO DE STRANGER THINGS</h1>
+            <p>“Has cruzado el portal...”</p>
+            <div class="heartbeat"></div>
+        </div>
+
+        <button class="portal-trigger" id="cerrarPortalBtn">🌀 CERRAR PORTAL 🌀</button>
+    </div>
+
+    <!-- MODALES -->
+    <div id="modalInicio" class="modal">
+        <div class="modal-contenido">
+            <span class="cerrar-modal">&times;</span>
+            <h2>👻 INICIO</h2>
+            <p>Bienvenido al Upside Down, un mundo oscuro lleno de misterios.</p>
+            <p>Hawkins, 1983. Todo comenzó con la desaparición de Will Byers.</p>
+            <p>Desde entonces, un grupo de niños descubrió que hay un mundo paralelo lleno de criaturas y peligros.</p>
+        </div>
+    </div>
+
+    <div id="modalPersonajes" class="modal">
+        <div class="modal-contenido">
+            <span class="cerrar-modal">&times;</span>
+            <h2>👥 PERSONAJES</h2>
+            <ul>
+                <li><strong>Eleven</strong> - Poderes telequinéticos</li>
+                <li><strong>Mike Wheeler</strong> - El líder del grupo</li>
+                <li><strong>Dustin Henderson</strong> - El inteligente</li>
+                <li><strong>Lucas Sinclair</strong> - El estratega</li>
+                <li><strong>Will Byers</strong> - El superviviente</li>
+                <li><strong>Max Mayfield</strong> - La patinadora</li>
+                <li><strong>Jim Hopper</strong> - El jefe de policía</li>
+                <li><strong>Joyce Byers</strong> - La madre</li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="modalCuriosidades" class="modal">
+        <div class="modal-contenido">
+            <span class="cerrar-modal">&times;</span>
+            <h2>📚 CURIOSIDADES</h2>
+            <ul>
+                <li>La serie iba a llamarse "Montauk" originalmente</li>
+                <li>Los hermanos Duffer se inspiraron en películas de los 80</li>
+                <li>El Demogorgon fue creado sin CGI, usaron un actor con prótesis</li>
+                <li>Los personajes principales están basados en jugadores de D&D</li>
+                <li>La serie ha ganado más de 50 premios internacionales</li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="modalCreatividad" class="modal">
+        <div class="modal-contenido">
+            <span class="cerrar-modal">&times;</span>
+            <h2>🎨 CREATIVIDAD</h2>
+            <form id="formCreativo">
+                <input type="text" placeholder="Tu nombre" required>
+                <input type="email" placeholder="Tu email">
+                <textarea placeholder="Comparte tu arte, historia o teoría sobre Stranger Things..." rows="4"></textarea>
+                <button type="submit">Enviar al Upside Down 🌑</button>
+            </form>
+            <p id="mensajeForm" style="color: #ff6600; margin-top: 10px;"></p>
+        </div>
+    </div>
+
+    <script src="portal-abierto.js"></script>
+</body>
+</html>
