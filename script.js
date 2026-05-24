@@ -1,8 +1,9 @@
 const portal = document.getElementById('madrePortal');
 const triggerBtn = document.getElementById('portalTrigger');
-let portalAbierto = true;
+const tarjetasOverlay = document.getElementById('tarjetasOverlay');
+let portalAbierto = false;
 
-// Seguimiento del mouse para luces parpadeantes
+// Luces al mover mouse
 document.addEventListener('mousemove', (e) => {
     const x = (e.clientX / window.innerWidth) * 100;
     const y = (e.clientY / window.innerHeight) * 100;
@@ -10,45 +11,34 @@ document.addEventListener('mousemove', (e) => {
     document.documentElement.style.setProperty('--y', `${y}%`);
 });
 
-// Efecto de abrir/cerrar portal (MODIFICADO para mostrar tarjetas)
+// Abrir/Cerrar portal
 triggerBtn.addEventListener('click', () => {
-    if (portalAbierto) {
-        // Cerrar portal - ocultar tarjetas
-        portal.style.animation = 'none';
-        portal.style.transform = 'scale(0.3)';
-        portal.style.opacity = '0';
-        portal.style.filter = 'blur(30px)';
-        triggerBtn.textContent = '🌀 ABRIR PORTAL 🌀';
-        portalAbierto = false;
-        
-        // OCULTAR TARJETAS
-        const tarjetas = document.getElementById('tarjetasContainer');
-        if (tarjetas) tarjetas.classList.remove('mostrar');
-        
-        console.log('🌀 Portal cerrado...');
-    } else {
-        // Abrir portal - mostrar tarjetas
+    if (!portalAbierto) {
+        // Abrir portal
         portal.style.animation = 'palpitar 1s ease-in-out infinite';
         portal.style.transform = 'scale(1)';
         portal.style.opacity = '1';
         portal.style.filter = 'blur(0px)';
-        triggerBtn.textContent = '⚡ CERRAR PORTAL ⚡';
+        tarjetasOverlay.classList.add('mostrar');
+        triggerBtn.textContent = '🌀 CERRAR PORTAL 🌀';
         portalAbierto = true;
         
-        // MOSTRAR TARJETAS
-        const tarjetas = document.getElementById('tarjetasContainer');
-        if (tarjetas) tarjetas.classList.add('mostrar');
-        
-        // Efecto de sacudida
+        // Sacudida
         document.body.style.animation = 'shakePortal 0.3s ease-in-out';
-        setTimeout(() => {
-            document.body.style.animation = '';
-        }, 300);
-        console.log('⚡ Portal abierto ⚡');
+        setTimeout(() => document.body.style.animation = '', 300);
+    } else {
+        // Cerrar portal
+        portal.style.animation = 'none';
+        portal.style.transform = 'scale(0.3)';
+        portal.style.opacity = '0';
+        portal.style.filter = 'blur(30px)';
+        tarjetasOverlay.classList.remove('mostrar');
+        triggerBtn.textContent = '⚡ ABRIR PORTAL ⚡';
+        portalAbierto = false;
     }
 });
 
-// Efecto de sacudida
+// Animación de sacudida
 const shakeStyle = document.createElement('style');
 shakeStyle.textContent = `
     @keyframes shakePortal {
@@ -60,86 +50,29 @@ shakeStyle.textContent = `
 `;
 document.head.appendChild(shakeStyle);
 
-// Interacción con el portal
+// Interacción con portal
 portal.addEventListener('mouseenter', () => {
-    portal.style.boxShadow = '0 0 180px rgba(255, 50, 0, 0.9), inset 0 0 60px rgba(0,0,0,0.8)';
-    portal.style.transform = 'scale(1.02)';
-});
-
-portal.addEventListener('mouseleave', () => {
-    portal.style.boxShadow = '0 0 100px rgba(255, 0, 0, 0.8), 0 0 200px rgba(255, 50, 0, 0.6)';
-    portal.style.transform = 'scale(1)';
-});
-
-// Easter Egg
-document.addEventListener('keydown', (e) => {
-    if (e.ctrlKey && e.key === 'd') {
-        alert('💀✨ ¡HAS DESCUBIERTO EL MENSAJE SECRETO! ✨💀\n"Vecna está mirando desde el otro lado..."');
-        document.body.style.filter = 'hue-rotate(180deg)';
-        setTimeout(() => {
-            document.body.style.filter = '';
-        }, 2000);
+    if (portalAbierto) {
+        portal.style.boxShadow = '0 0 180px rgba(255, 50, 0, 0.9), inset 0 0 60px rgba(0,0,0,0.8)';
     }
 });
 
-// Partículas rojas que caen
-function crearParticula() {
-    const particula = document.createElement('div');
-    particula.classList.add('particula');
-    particula.style.position = 'fixed';
-    particula.style.width = '2px';
-    particula.style.height = '2px';
-    particula.style.backgroundColor = '#ff3300';
-    particula.style.top = '0px';
-    particula.style.left = Math.random() * window.innerWidth + 'px';
-    particula.style.opacity = Math.random();
-    particula.style.borderRadius = '50%';
-    particula.style.pointerEvents = 'none';
-    particula.style.zIndex = '999';
-    document.body.appendChild(particula);
-    
-    let posY = 0;
-    const interval = setInterval(() => {
-        posY += 5;
-        particula.style.transform = `translateY(${posY}px)`;
-        if (posY > window.innerHeight) {
-            clearInterval(interval);
-            particula.remove();
-        }
-    }, 30);
+portal.addEventListener('mouseleave', () => {
+    if (portalAbierto) {
+        portal.style.boxShadow = '0 0 100px rgba(255, 0, 0, 0.8), 0 0 200px rgba(255, 50, 0, 0.6)';
+    }
+});
+
+// Funciones para modales
+function mostrarModal(id) {
+    const modal = document.getElementById('modal' + id.charAt(0).toUpperCase() + id.slice(1));
+    if (modal) modal.style.display = 'block';
 }
 
-setInterval(crearParticula, 300);
-
-/* ========== NUEVO CÓDIGO PARA TARJETAS Y MODALES ========== */
-
-// Mostrar modales al hacer clic en las tarjetas
-const tarjetas = document.querySelectorAll('.tarjeta');
-const modales = {
-    inicio: document.getElementById('modalInicio'),
-    personajes: document.getElementById('modalPersonajes'),
-    curiosidades: document.getElementById('modalCuriosidades'),
-    creatividad: document.getElementById('modalCreatividad')
-};
-
-tarjetas.forEach(tarjeta => {
-    tarjeta.addEventListener('click', () => {
-        const apartado = tarjeta.getAttribute('data-apartado');
-        if (modales[apartado]) {
-            modales[apartado].style.display = 'block';
-        }
-    });
-});
-
-// Cerrar modales con la X
-const cerrarBtns = document.querySelectorAll('.cerrar-modal');
-cerrarBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-        Object.values(modales).forEach(modal => {
-            if (modal) modal.style.display = 'none';
-        });
-    });
-});
+function cerrarModal(id) {
+    const modal = document.getElementById(id);
+    if (modal) modal.style.display = 'none';
+}
 
 // Cerrar modal al hacer clic fuera
 window.addEventListener('click', (e) => {
@@ -148,18 +81,46 @@ window.addEventListener('click', (e) => {
     }
 });
 
-// Formulario de creatividad
-const form = document.getElementById('formCreativo');
-const mensajeForm = document.getElementById('mensajeForm');
-
-if (form) {
-    form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        mensajeForm.textContent = '✨ ¡Tu creación ha cruzado el portal! ✨';
-        mensajeForm.style.color = '#ff6600';
-        form.reset();
-        setTimeout(() => {
-            mensajeForm.textContent = '';
-        }, 3000);
-    });
+// Formulario
+function enviarFormulario(event) {
+    event.preventDefault();
+    alert('✨ ¡Tu creación cruzó el portal! ✨');
+    document.getElementById('nombre').value = '';
+    document.getElementById('mensaje').value = '';
 }
+
+// Partículas
+function crearParticula() {
+    const particula = document.createElement('div');
+    particula.style.position = 'fixed';
+    particula.style.width = '2px';
+    particula.style.height = '2px';
+    particula.style.backgroundColor = '#ff3300';
+    particula.style.left = Math.random() * window.innerWidth + 'px';
+    particula.style.top = '0px';
+    particula.style.opacity = Math.random();
+    particula.style.borderRadius = '50%';
+    particula.style.pointerEvents = 'none';
+    particula.style.zIndex = '999';
+    document.body.appendChild(particula);
+    
+    let y = 0;
+    const caer = setInterval(() => {
+        y += 5;
+        particula.style.transform = `translateY(${y}px)`;
+        if (y > window.innerHeight) {
+            clearInterval(caer);
+            particula.remove();
+        }
+    }, 30);
+}
+setInterval(crearParticula, 300);
+
+// Easter Egg
+document.addEventListener('keydown', (e) => {
+    if (e.ctrlKey && e.key === 'd') {
+        alert('💀✨ ¡MENSAJE SECRETO! ✨💀\nVecna te está observando...');
+        document.body.style.filter = 'hue-rotate(180deg)';
+        setTimeout(() => document.body.style.filter = '', 2000);
+    }
+});
