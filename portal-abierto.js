@@ -1,138 +1,128 @@
-const portal = document.getElementById('madrePortal');
-const cerrarBtn = document.getElementById('cerrarPortalBtn');
+// ========== ESTUDIO DE DIBUJO (CORREGIDO) ==========
+const canvas = document.getElementById('lienzoDibujo');
+const ctx = canvas.getContext('2d');
+let dibujando = false;
+let colorActual = '#ff0000'; // Rojo por defecto
 
-// Luces al mover mouse
-document.addEventListener('mousemove', (e) => {
-    const x = (e.clientX / window.innerWidth) * 100;
-    const y = (e.clientY / window.innerHeight) * 100;
-    document.documentElement.style.setProperty('--x', `${x}%`);
-    document.documentElement.style.setProperty('--y', `${y}%`);
-});
+// Configurar el lienzo (300x300, fondo blanco)
+canvas.width = 300;
+canvas.height = 300;
+ctx.fillStyle = '#ffffff';
+ctx.fillRect(0, 0, canvas.width, canvas.height);
+ctx.fillStyle = colorActual;
 
-// Cerrar portal - volver a la página principal
-cerrarBtn.addEventListener('click', () => {
-    document.body.style.animation = 'shakePortal 0.3s ease-in-out';
-    setTimeout(() => {
-        window.location.href = 'index.html';
-    }, 300);
-});
-
-// Animación de sacudida
-const shakeStyle = document.createElement('style');
-shakeStyle.textContent = `
-    @keyframes shakePortal {
-        0%, 100% { transform: translate(0, 0); }
-        25% { transform: translate(-5px, 5px); }
-        50% { transform: translate(5px, -5px); }
-        75% { transform: translate(-5px, -5px); }
-    }
-`;
-document.head.appendChild(shakeStyle);
-
-// Interacción con portal
-portal.addEventListener('mouseenter', () => {
-    portal.style.boxShadow = '0 0 180px rgba(255, 50, 0, 0.9), inset 0 0 60px rgba(0,0,0,0.8)';
-    portal.style.transform = 'scale(1.02)';
-});
-
-portal.addEventListener('mouseleave', () => {
-    portal.style.boxShadow = '0 0 100px rgba(255, 0, 0, 0.8), 0 0 200px rgba(255, 50, 0, 0.6)';
-    portal.style.transform = 'scale(1)';
-});
-
-// Mostrar modales al hacer clic en las tarjetas
-const tarjetas = document.querySelectorAll('.tarjeta');
-const modales = {
-    inicio: document.getElementById('modalInicio'),
-    personajes: document.getElementById('modalPersonajes'),
-    curiosidades: document.getElementById('modalCuriosidades'),
-    creatividad: document.getElementById('modalCreatividad')
-};
-
-tarjetas.forEach(tarjeta => {
-    tarjeta.addEventListener('click', () => {
-        const modalKey = tarjeta.getAttribute('data-modal');
-        if (modales[modalKey]) {
-            modales[modalKey].style.display = 'block';
-        }
-    });
-});
-
-// Cerrar modales con la X
-const cerrarBtns = document.querySelectorAll('.cerrar-modal');
-cerrarBtns.forEach(btn => {
+// Seleccionar color - FUNCIONA CORRECTAMENTE
+const colores = document.querySelectorAll('.color-btn');
+colores.forEach(btn => {
     btn.addEventListener('click', () => {
-        Object.values(modales).forEach(modal => {
-            if (modal) modal.style.display = 'none';
-        });
+        // Quitar clase activa de todos
+        colores.forEach(b => b.classList.remove('activo'));
+        // Activar el seleccionado
+        btn.classList.add('activo');
+        colorActual = btn.getAttribute('data-color');
+        console.log('Color seleccionado:', colorActual); // Para verificar
     });
 });
+// Activar color rojo por defecto
+const rojoBtn = document.querySelector('.color-btn[data-color="#ff0000"]');
+if (rojoBtn) rojoBtn.classList.add('activo');
 
-// Cerrar modal al hacer clic fuera
-window.addEventListener('click', (e) => {
-    if (e.target.classList.contains('modal')) {
-        e.target.style.display = 'none';
+// Funciones de dibujo
+function empezarDibujar(e) {
+    dibujando = true;
+    dibujar(e);
+    e.preventDefault();
+}
+
+function dejarDibujar() {
+    dibujando = false;
+    ctx.beginPath();
+}
+
+function dibujar(e) {
+    if (!dibujando) return;
+    e.preventDefault();
+    
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    
+    let x, y;
+    if (e.touches) {
+        x = (e.touches[0].clientX - rect.left) * scaleX;
+        y = (e.touches[0].clientY - rect.top) * scaleY;
+    } else {
+        x = (e.clientX - rect.left) * scaleX;
+        y = (e.clientY - rect.top) * scaleY;
     }
-});
+    
+    // Limitar coordenadas al canvas
+    x = Math.min(Math.max(0, x), canvas.width);
+    y = Math.min(Math.max(0, y), canvas.height);
+    
+    ctx.strokeStyle = colorActual;
+    ctx.lineWidth = 8;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    
+    ctx.lineTo(x, y);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+}
 
-// Formulario
-const form = document.getElementById('formCreativo');
+// Eventos para mouse
+canvas.addEventListener('mousedown', empezarDibujar);
+canvas.addEventListener('mouseup', dejarDibujar);
+canvas.addEventListener('mousemove', dibujar);
+canvas.addEventListener('mouseleave', dejarDibujar);
+
+// Eventos para táctil
+canvas.addEventListener('touchstart', empezarDibujar);
+canvas.addEventListener('touchend', dejarDibujar);
+canvas.addEventListener('touchmove', dibujar);
+canvas.addEventListener('touchcancel', dejarDibujar);
+
+// Evitar que el mouse se salga del canvas mientras dibuja
+canvas.addEventListener('contextmenu', (e) => e.preventDefault());
+
+// Limpiar lienzo (fondo blanco)
+const limpiarBtn = document.getElementById('limpiarLienzo');
+if (limpiarBtn) {
+    limpiarBtn.addEventListener('click', () => {
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = colorActual;
+    });
+}
+
+// Descargar dibujo
+const descargarBtn = document.getElementById('descargarDibujo');
+if (descargarBtn) {
+    descargarBtn.addEventListener('click', () => {
+        const link = document.createElement('a');
+        link.download = `stranger_things_dibujo_${Date.now()}.png`;
+        link.href = canvas.toDataURL();
+        link.click();
+    });
+}
+
+// Formulario (conservar el original)
+const formulario = document.getElementById('formCreativo');
 const mensajeForm = document.getElementById('mensajeForm');
 
-if (form) {
-    form.addEventListener('submit', (e) => {
+if (formulario) {
+    // Eliminar event listeners anteriores si existen
+    const nuevoForm = formulario.cloneNode(true);
+    formulario.parentNode.replaceChild(nuevoForm, formulario);
+    
+    nuevoForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        mensajeForm.textContent = '✨ ¡Tu creación ha cruzado el portal! ✨';
+        mensajeForm.textContent = '✨ ¡Tu dibujo ha cruzado el portal! ✨';
         mensajeForm.style.color = '#ff6600';
-        form.reset();
+        nuevoForm.reset();
         setTimeout(() => {
             mensajeForm.textContent = '';
         }, 3000);
     });
 }
-
-// Partículas
-function crearParticula() {
-    const particula = document.createElement('div');
-    particula.style.position = 'fixed';
-    particula.style.width = '2px';
-    particula.style.height = '2px';
-    particula.style.backgroundColor = '#ff3300';
-    particula.style.left = Math.random() * window.innerWidth + 'px';
-    particula.style.top = '0px';
-    particula.style.opacity = Math.random();
-    particula.style.borderRadius = '50%';
-    particula.style.pointerEvents = 'none';
-    particula.style.zIndex = '999';
-    document.body.appendChild(particula);
-    
-    let y = 0;
-    const caer = setInterval(() => {
-        y += 5;
-        particula.style.transform = `translateY(${y}px)`;
-        if (y > window.innerHeight) {
-            clearInterval(caer);
-            particula.remove();
-        }
-    }, 30);
-}
-setInterval(crearParticula, 300);
-
-// Easter Egg
-document.addEventListener('keydown', (e) => {
-    if (e.ctrlKey && e.key === 'd') {
-        alert('💀✨ ¡MENSAJE SECRETO! ✨💀\n"Vecna está observando desde las sombras..."');
-        document.body.style.filter = 'hue-rotate(180deg)';
-        setTimeout(() => document.body.style.filter = '', 2000);
-    }
-});
-// Configurar el lienzo
-canvas.width = 250;
-canvas.height = 250;
-ctx.fillStyle = '#ffffff';  // Cambiado de #1a1a1a a #ffffff (blanco)
-ctx.fillRect(0, 0, canvas.width, canvas.height);
-// Limpiar lienzo (fondo blanco)
-document.getElementById('limpiarLienzo').addEventListener('click', () => {
-    ctx.fillStyle = '#ffffff';  // Blanco
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-});
