@@ -40,7 +40,7 @@ setInterval(crearParticula, 300);
 
 document.addEventListener('keydown', (e) => {
     if (e.ctrlKey && e.key === 'd') {
-        alert('💀✨ ¡MENSAJE SECRETO! ✨💀\nVecna te está observando...');
+        alert('💀✨ ¡MENSAJE SECRETO! ✨💀\nEl Vecna te está observando...');
         document.body.style.filter = 'hue-rotate(180deg)';
         setTimeout(() => document.body.style.filter = '', 2000);
     }
