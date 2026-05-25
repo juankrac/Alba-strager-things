@@ -119,8 +119,31 @@ if (formulario) {
     });
 }
 
-// ========== JUEGO INVASORES ==========
+// ========== JUEGO INVASORES CON SPRITES ==========
 let invasoresAnimacion = null;
+
+// Cargar las imágenes de los sprites
+const imagenDustin = new Image();
+const imagenDemogorgon = new Image();
+imagenDustin.src = 'dustin.png';
+imagenDemogorgon.src = 'demogorgon.png';
+
+// Variables para saber si las imágenes ya cargaron
+let imagenesCargadas = false;
+let contadorImagenes = 0;
+
+function verificarCarga() {
+    contadorImagenes++;
+    if (contadorImagenes === 2) {
+        imagenesCargadas = true;
+        console.log('✅ Sprites cargados correctamente');
+    }
+}
+
+imagenDustin.onload = verificarCarga;
+imagenDemogorgon.onload = verificarCarga;
+imagenDustin.onerror = () => console.error('❌ Error cargando dustin.png');
+imagenDemogorgon.onerror = () => console.error('❌ Error cargando demogorgon.png');
 
 function iniciarJuegoInvasores() {
     if (invasoresAnimacion) cancelAnimationFrame(invasoresAnimacion);
@@ -138,82 +161,100 @@ function iniciarJuegoInvasores() {
     let mouseX = playerX;
     let jugando = true;
     
-    for (let row = 0; row < 3; row++) {
-        for (let col = 0; col < 7; col++) {
-            demogorgons.push({ x: 80 + col * 70, y: 60 + row * 60, w: 40, h: 40, vivo: true });
+    // Crear Demogorgons
+    function crearDemogorgons() {
+        demogorgons = [];
+        for (let row = 0; row < 3; row++) {
+            for (let col = 0; col < 7; col++) {
+                demogorgons.push({ x: 80 + col * 70, y: 60 + row * 60, w: 45, h: 45, vivo: true });
+            }
         }
     }
+    crearDemogorgons();
     
     function dibujar() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        // Fondo estilo Upside Down
         ctx.fillStyle = '#0a0a0a';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         
-        for (let d of demogorgons) {
-            if (!d.vivo) continue;
-            ctx.fillStyle = '#8B0000';
-            ctx.beginPath();
-            ctx.ellipse(d.x + 20, d.y + 20, 18, 22, 0, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.fillStyle = '#ff0000';
-            ctx.beginPath();
-            ctx.moveTo(d.x + 10, d.y + 5);
-            ctx.lineTo(d.x + 20, d.y);
-            ctx.lineTo(d.x + 30, d.y + 5);
-            ctx.fill();
-            ctx.fillStyle = 'white';
-            ctx.beginPath();
-            ctx.arc(d.x + 12, d.y + 18, 4, 0, Math.PI * 2);
-            ctx.arc(d.x + 28, d.y + 18, 4, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.fillStyle = 'black';
-            ctx.beginPath();
-            ctx.arc(d.x + 11, d.y + 17, 2, 0, Math.PI * 2);
-            ctx.arc(d.x + 27, d.y + 17, 2, 0, Math.PI * 2);
-            ctx.fill();
+        // Partículas de fondo
+        for (let i = 0; i < 30; i++) {
+            ctx.fillStyle = `rgba(255, 51, 0, ${Math.random() * 0.3})`;
+            ctx.fillRect(Math.random() * canvas.width, Math.random() * canvas.height, 2, 2);
         }
         
+        // Dibujar Demogorgons con sprite
+        for (let d of demogorgons) {
+            if (!d.vivo) continue;
+            if (imagenDemogorgon.complete && imagenDemogorgon.naturalHeight !== 0) {
+                ctx.drawImage(imagenDemogorgon, d.x, d.y, d.w, d.h);
+            } else {
+                // Fallback: círculo rojo si no carga la imagen
+                ctx.fillStyle = '#8B0000';
+                ctx.beginPath();
+                ctx.arc(d.x + d.w/2, d.y + d.h/2, 20, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.fillStyle = '#ff0000';
+                ctx.beginPath();
+                ctx.moveTo(d.x + 10, d.y + 5);
+                ctx.lineTo(d.x + d.w/2, d.y);
+                ctx.lineTo(d.x + d.w - 10, d.y + 5);
+                ctx.fill();
+            }
+        }
+        
+        // Dibujar piedras
         for (let p of piedras) {
             ctx.fillStyle = '#808080';
+            ctx.shadowBlur = 0;
             ctx.fillRect(p.x, p.y, 6, 10);
         }
         
-        ctx.fillStyle = '#ffcc00';
-        ctx.beginPath();
-        ctx.arc(playerX + 15, canvas.height - 35, 15, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.fillStyle = 'black';
-        ctx.beginPath();
-        ctx.arc(playerX + 8, canvas.height - 40, 3, 0, Math.PI * 2);
-        ctx.arc(playerX + 22, canvas.height - 40, 3, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.fillStyle = '#8B4513';
-        ctx.fillRect(playerX + 5, canvas.height - 28, 20, 8);
+        // Dibujar Dustin con sprite
+        if (imagenDustin.complete && imagenDustin.naturalHeight !== 0) {
+            ctx.drawImage(imagenDustin, playerX, canvas.height - 75, 50, 55);
+        } else {
+            // Fallback: cuadrado amarillo
+            ctx.fillStyle = '#ffcc00';
+            ctx.fillRect(playerX, canvas.height - 70, 50, 50);
+            ctx.fillStyle = '#000';
+            ctx.fillRect(playerX + 10, canvas.height - 60, 8, 8);
+            ctx.fillRect(playerX + 32, canvas.height - 60, 8, 8);
+            ctx.fillStyle = '#8B4513';
+            ctx.fillRect(playerX + 15, canvas.height - 30, 20, 8);
+        }
         
+        // Mira del mouse
         ctx.fillStyle = '#ff3300';
         ctx.beginPath();
-        ctx.arc(mouseX + 15, canvas.height - 55, 8, 0, Math.PI * 2);
+        ctx.arc(mouseX + 25, canvas.height - 65, 8, 0, Math.PI * 2);
         ctx.fill();
         ctx.fillStyle = 'white';
         ctx.beginPath();
-        ctx.arc(mouseX + 15, canvas.height - 57, 2, 0, Math.PI * 2);
+        ctx.arc(mouseX + 25, canvas.height - 67, 2, 0, Math.PI * 2);
         ctx.fill();
     }
     
     function actualizar() {
         if (!jugando) return;
         
-        playerX = Math.min(Math.max(mouseX, 0), canvas.width - 30);
+        // Mover jugador
+        playerX = Math.min(Math.max(mouseX, 0), canvas.width - 50);
         
+        // Mover piedras
         for (let i = 0; i < piedras.length; i++) {
             piedras[i].y -= 5;
             if (piedras[i].y + 10 < 0) { piedras.splice(i,1); i--; }
         }
         
+        // Colisiones piedras vs Demogorgons
         for (let i = 0; i < piedras.length; i++) {
             for (let j = 0; j < demogorgons.length; j++) {
                 let d = demogorgons[j];
-                if (d.vivo && piedras[i].x < d.x + d.w && piedras[i].x + 6 > d.x && piedras[i].y < d.y + d.h && piedras[i].y + 10 > d.y) {
+                if (d.vivo && piedras[i].x < d.x + d.w && piedras[i].x + 6 > d.x && 
+                    piedras[i].y < d.y + d.h && piedras[i].y + 10 > d.y) {
                     d.vivo = false;
                     piedras.splice(i,1);
                     score += 10;
@@ -223,35 +264,47 @@ function iniciarJuegoInvasores() {
             }
         }
         
-        demogorgons = demogorgons.filter(d => d.vivo);
+        // Eliminar Demogorgons muertos
+        for (let i = 0; i < demogorgons.length; i++) {
+            if (!demogorgons[i].vivo) {
+                demogorgons.splice(i,1);
+                i--;
+            }
+        }
         
+        // Mover Demogorgons
         let bajar = false;
         for (let d of demogorgons) {
-            d.x += 1;
+            d.x += 1.5;
             if (d.x + d.w > canvas.width || d.x < 0) bajar = true;
         }
         if (bajar) {
-            for (let d of demogorgons) { d.y += 10; d.x += d.x > canvas.width/2 ? -10 : 10; }
+            for (let d of demogorgons) { 
+                d.y += 12; 
+                d.x += d.x > canvas.width/2 ? -15 : 15;
+            }
         }
         
+        // Colisión jugador vs Demogorgons
         for (let d of demogorgons) {
-            if (playerX < d.x + d.w && playerX + 30 > d.x && canvas.height - 50 < d.y + d.h && canvas.height - 20 > d.y) {
+            if (playerX < d.x + d.w && playerX + 50 > d.x && 
+                canvas.height - 75 < d.y + d.h && canvas.height - 20 > d.y) {
                 lives--;
                 document.getElementById('lives').innerText = lives;
-                if (lives <= 0) { jugando = false; alert('GAME OVER - Puntuación: ' + score); return; }
-                demogorgons = [];
-                for (let row = 0; row < 3; row++) {
-                    for (let col = 0; col < 7; col++) {
-                        demogorgons.push({ x: 80 + col * 70, y: 60 + row * 60, w: 40, h: 40, vivo: true });
-                    }
+                if (lives <= 0) { 
+                    jugando = false; 
+                    alert('💀 GAME OVER 💀\nPuntuación: ' + score); 
+                    return; 
                 }
+                crearDemogorgons();
                 break;
             }
         }
         
+        // Victoria
         if (demogorgons.length === 0) {
             jugando = false;
-            alert('¡VICTORIA! Puntuación: ' + score);
+            alert('🎉 ¡VICTORIA! 🎉\nHas derrotado a todos los Demogorgons\nPuntuación: ' + score);
             return;
         }
         
@@ -259,13 +312,29 @@ function iniciarJuegoInvasores() {
         invasoresAnimacion = requestAnimationFrame(actualizar);
     }
     
+    // Eventos del mouse
     function onMouseMove(e) {
         const rect = canvas.getBoundingClientRect();
         const scaleX = canvas.width / rect.width;
-        let x = (e.clientX - rect.left) * scaleX;
-        mouseX = Math.min(Math.max(x - 15, 0), canvas.width - 30);
+        let x;
+        if (e.touches) {
+            x = (e.touches[0].clientX - rect.left) * scaleX;
+        } else {
+            x = (e.clientX - rect.left) * scaleX;
+        }
+        mouseX = Math.min(Math.max(x - 25, 0), canvas.width - 50);
     }
-    function onShoot(e) { if (jugando) piedras.push({ x: playerX + 12, y: canvas.height - 60 }); e.preventDefault(); }
+    
+    function onShoot(e) { 
+        if (jugando) {
+            piedras.push({ x: playerX + 22, y: canvas.height - 80 });
+            // Efecto de sonido visual
+            const mira = document.getElementById('gameCanvas');
+            mira.style.transform = 'scale(0.98)';
+            setTimeout(() => { if(mira) mira.style.transform = ''; }, 100);
+        }
+        e.preventDefault(); 
+    }
     
     canvas.addEventListener('mousemove', onMouseMove);
     canvas.addEventListener('click', onShoot);
@@ -274,6 +343,7 @@ function iniciarJuegoInvasores() {
     
     actualizar();
     
+    // Botón reset
     const resetBtn = document.getElementById('resetGame');
     const newReset = resetBtn.cloneNode(true);
     resetBtn.parentNode.replaceChild(newReset, resetBtn);
@@ -327,52 +397,4 @@ function jugarDemoguchi() {
     if (demoguchiStats.energia >= 15) {
         demoguchiStats.felicidad = Math.min(100, demoguchiStats.felicidad + 20);
         demoguchiStats.energia = Math.max(0, demoguchiStats.energia - 15);
-        demoguchiStats.hambre = Math.max(0, demoguchiStats.hambre - 10);
-        mensajeDemoguchi('🎾 ¡Jugaste! +20% felicidad');
-        actualizarDemoguchi();
-    } else mensajeDemoguchi('😴 Demoguchi está muy cansado');
-}
-
-function dormirDemoguchi() {
-    demoguchiStats.energia = Math.min(100, demoguchiStats.energia + 40);
-    demoguchiStats.hambre = Math.max(0, demoguchiStats.hambre - 15);
-    mensajeDemoguchi('😴 Durmió +40% energía');
-    actualizarDemoguchi();
-}
-
-function resetearDemoguchi() {
-    demoguchiStats = { hambre: 100, felicidad: 100, energia: 100 };
-    if (demoguchiInterval) clearInterval(demoguchiInterval);
-    actualizarDemoguchi();
-    document.getElementById('demoguchiMensajes').innerHTML = '<p>🐣 ¡Demoguchi ha renacido!</p>';
-    iniciarDemoguchi();
-}
-
-function iniciarDemoguchi() {
-    if (demoguchiInterval) clearInterval(demoguchiInterval);
-    actualizarDemoguchi();
-    demoguchiInterval = setInterval(() => {
-        if (document.getElementById('modalDemoguchi')?.style.display === 'block') {
-            demoguchiStats.hambre = Math.max(0, demoguchiStats.hambre - (Math.random() * 2 + 1));
-            demoguchiStats.energia = Math.max(0, demoguchiStats.energia - (Math.random() * 1.5 + 0.5));
-            if (demoguchiStats.hambre <= 0) demoguchiStats.felicidad = Math.max(0, demoguchiStats.felicidad - 5);
-            actualizarDemoguchi();
-        }
-    }, 5000);
-    
-    document.querySelectorAll('.comida-btn').forEach(btn => {
-        btn.onclick = () => alimentar(btn.getAttribute('data-comida'));
-    });
-    document.getElementById('jugarBtn').onclick = jugarDemoguchi;
-    document.getElementById('dormirBtn').onclick = dormirDemoguchi;
-    document.getElementById('resetDemoguchiBtn').onclick = resetearDemoguchi;
-}
-
-// ========== CASTILLO BYERS ==========
-function initCastillo() {
-    const entrar = document.getElementById('entrarCastilloBtn');
-    if (entrar) {
-        entrar.addEventListener('click', () => {
-            const pass = document.getElementById('passwordCastillo').value;
-            if (pass === 'Radagast') {
-                document.getElementById('cast
+        demoguchiStats.hambre = Math.max(0, demoguchiStats.h
