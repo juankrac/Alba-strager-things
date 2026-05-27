@@ -909,3 +909,216 @@ body {
         font-size: 2.5rem;
     }
 }
+/* ========== PUZZLES ========== */
+.modal-puzzles {
+    max-width: 800px;
+}
+
+.puzzles-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin: 20px 0;
+}
+
+.puzzle-card {
+    background: #1a0000;
+    border: 2px solid #ff3300;
+    border-radius: 20px;
+    padding: 20px;
+    text-align: center;
+    transition: all 0.3s;
+}
+
+.puzzle-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 30px rgba(255,51,0,0.4);
+}
+
+.puzzle-icono {
+    font-size: 3rem;
+    margin-bottom: 10px;
+}
+
+.puzzle-card h3 {
+    color: #ff6600;
+    margin-bottom: 10px;
+}
+
+.puzzle-card p {
+    color: #ff8866;
+    font-size: 0.8rem;
+    margin-bottom: 15px;
+}
+
+.btn-puzzle {
+    background: #220000;
+    border: 2px solid #ff3300;
+    color: #ff6600;
+    font-family: monospace;
+    padding: 8px 20px;
+    cursor: pointer;
+    border-radius: 50px;
+    transition: 0.2s;
+}
+
+.btn-puzzle:hover {
+    background: #ff3300;
+    color: black;
+    transform: scale(1.05);
+}
+
+.juego-container {
+    margin-top: 20px;
+    padding: 20px;
+    background: #0a0000;
+    border: 2px solid #ff3300;
+    border-radius: 20px;
+}
+
+.btn-cerrar-juego {
+    background: #220000;
+    border: 1px solid #ff3300;
+    color: #ff8866;
+    font-family: monospace;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin-bottom: 15px;
+    border-radius: 10px;
+}
+
+.btn-cerrar-juego:hover {
+    background: #ff3300;
+    color: black;
+}
+
+/* JUEGO DE MEMORIA */
+.memoria-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.memoria-card {
+    aspect-ratio: 1;
+    background: #2a0000;
+    border: 2px solid #ff3300;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.memoria-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px #ff3300;
+}
+
+.memoria-card.revelada {
+    background: #1a1a2a;
+}
+
+/* JUEGO NÚMEROS (15 puzzle) */
+.numeros-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 5px;
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+.numero-tile {
+    aspect-ratio: 1;
+    background: #2a0000;
+    border: 2px solid #ff3300;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #ff8866;
+    cursor: pointer;
+    transition: 0.1s;
+}
+
+.numero-tile.vacio {
+    background: #0a0000;
+    border-color: #440000;
+    cursor: default;
+}
+
+.numero-tile:hover:not(.vacio) {
+    background: #ff3300;
+    color: black;
+    transform: scale(1.02);
+}
+
+/* LABERINTO */
+.laberinto-canvas {
+    background: #0a0a0a;
+    border: 2px solid #ff3300;
+    border-radius: 10px;
+    display: block;
+    margin: 0 auto;
+}
+
+/* TRIVIA */
+.trivia-pregunta {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.trivia-pregunta p {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+}
+
+.trivia-opciones {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+.trivia-opcion {
+    background: #1a0000;
+    border: 1px solid #ff3300;
+    color: #ff8866;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: 0.2s;
+}
+
+.trivia-opcion:hover {
+    background: #ff3300;
+    color: black;
+}
+
+.trivia-resultado {
+    text-align: center;
+    margin-top: 15px;
+    font-weight: bold;
+}
+
+.contador-puntuacion {
+    text-align: center;
+    margin-bottom: 15px;
+    color: #ff6600;
+}
+
+@media (max-width: 600px) {
+    .puzzles-grid {
+        grid-template-columns: 1fr;
+    }
+    .memoria-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
