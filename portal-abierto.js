@@ -432,4 +432,360 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
+// ========== PUZZLES ==========
+function abrirPuzzle(tipo) {
+    const juegoContainer = document.getElementById('juegoContainer');
+    const juegoArea = document.getElementById('juegoArea');
+    const puzzlesGrid = document.querySelector('.puzzles-grid');
+    
+    // Ocultar grid de puzzles y mostrar contenedor
+    puzzlesGrid.style.display = 'none';
+    juegoContainer.style.display = 'block';
+    
+    // Cargar el juego seleccionado
+    switch(tipo) {
+        case 'memoria':
+            iniciarJuegoMemoria(juegoArea);
+            break;
+        case 'numeros':
+            iniciarJuegoNumeros(juegoArea);
+            break;
+        case 'laberinto':
+            iniciarJuegoLaberinto(juegoArea);
+            break;
+        case 'preguntas':
+            iniciarJuegoPreguntas(juegoArea);
+            break;
+    }
+}
+
+// Cerrar juego
+document.getElementById('cerrarJuegoBtn').addEventListener('click', () => {
+    document.getElementById('juegoContainer').style.display = 'none';
+    document.querySelector('.puzzles-grid').style.display = 'grid';
+    document.getElementById('juegoArea').innerHTML = '';
+});
+
+// ========== PUZZLE 1: MEMORIA ==========
+function iniciarJuegoMemoria(container) {
+    const personajes = ['👻', '👥', '📚', '🎨', '👾', '🐣', '🏰', '⚡'];
+    const cartas = [...personajes, ...personajes];
+    
+    // Mezclar
+    for (let i = cartas.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [cartas[i], cartas[j]] = [cartas[j], cartas[i]];
+    }
+    
+    let seleccionadas = [];
+    let bloqueado = false;
+    let paresEncontrados = 0;
+    
+    container.innerHTML = `
+        <div class="contador-puntuacion">🧩 Parejas encontradas: ${paresEncontrados} / 8</div>
+        <div class="memoria-grid" id="memoriaGrid"></div>
+        <button id="resetMemoria" class="btn-puzzle" style="margin-top:15px;">🔄 Reiniciar</button>
+    `;
+    
+    const grid = document.getElementById('memoriaGrid');
+    
+    function crearTablero() {
+        grid.innerHTML = '';
+        cartas.forEach((carta, idx) => {
+            const card = document.createElement('div');
+            card.className = 'memoria-card';
+            card.dataset.index = idx;
+            card.dataset.valor = carta;
+            card.innerText = '?';
+            card.addEventListener('click', () => voltearCarta(idx));
+            grid.appendChild(card);
+        });
+    }
+    
+    function voltearCarta(idx) {
+        if (bloqueado) return;
+        const carta = grid.children[idx];
+        if (carta.innerText !== '?' || seleccionadas.includes(idx)) return;
+        
+        carta.innerText = cartas[idx];
+        seleccionadas.push(idx);
+        
+        if (seleccionadas.length === 2) {
+            bloqueado = true;
+            setTimeout(verificarPar, 700);
+        }
+    }
+    
+    function verificarPar() {
+        const [idx1, idx2] = seleccionadas;
+        const carta1 = grid.children[idx1];
+        const carta2 = grid.children[idx2];
+        
+        if (cartas[idx1] === cartas[idx2]) {
+            paresEncontrados++;
+            document.querySelector('.contador-puntuacion').innerHTML = `🧩 Parejas encontradas: ${paresEncontrados} / 8`;
+            carta1.style.background = '#330000';
+            carta2.style.background = '#330000';
+            if (paresEncontrados === 8) {
+                setTimeout(() => alert('🎉 ¡Felicidades! Completaste el puzzle de memoria 🎉'), 100);
+            }
+        } else {
+            carta1.innerText = '?';
+            carta2.innerText = '?';
+        }
+        
+        seleccionadas = [];
+        bloqueado = false;
+    }
+    
+    document.getElementById('resetMemoria').addEventListener('click', () => {
+        iniciarJuegoMemoria(container);
+    });
+    
+    crearTablero();
+}
+
+// ========== PUZZLE 2: NÚMEROS (15 puzzle) ==========
+function iniciarJuegoNumeros(container) {
+    let tiles = [];
+    let vacioIndex = 15;
+    
+    function iniciar() {
+        tiles = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,null];
+        vacioIndex = 15;
+        // Mezclar
+        for (let i = 0; i < 200; i++) {
+            const movimientos = obtenerMovimientosPosibles(vacioIndex);
+            const randomMove = movimientos[Math.floor(Math.random() * movimientos.length)];
+            moverTile(randomMove);
+        }
+        dibujar();
+    }
+    
+    function obtenerMovimientosPosibles(vacioPos) {
+        const movimientos = [];
+        const fila = Math.floor(vacioPos / 4);
+        const col = vacioPos % 4;
+        if (fila > 0) movimientos.push(vacioPos - 4);
+        if (fila < 3) movimientos.push(vacioPos + 4);
+        if (col > 0) movimientos.push(vacioPos - 1);
+        if (col < 3) movimientos.push(vacioPos + 1);
+        return movimientos;
+    }
+    
+    function moverTile(pos) {
+        if (obtenerMovimientosPosibles(vacioIndex).includes(pos)) {
+            tiles[vacioIndex] = tiles[pos];
+            tiles[pos] = null;
+            vacioIndex = pos;
+            dibujar();
+            verificarVictoria();
+        }
+    }
+    
+    function verificarVictoria() {
+        let victoria = true;
+        for (let i = 0; i < 15; i++) {
+            if (tiles[i] !== i + 1) victoria = false;
+        }
+        if (victoria) {
+            setTimeout(() => alert('🎉 ¡Ganaste! Ordenaste todos los números 🎉'), 100);
+        }
+    }
+    
+    function dibujar() {
+        const grid = document.createElement('div');
+        grid.className = 'numeros-grid';
+        for (let i = 0; i < 16; i++) {
+            const tile = document.createElement('div');
+            tile.className = 'numero-tile';
+            if (tiles[i] === null) {
+                tile.classList.add('vacio');
+                tile.innerText = '';
+            } else {
+                tile.innerText = tiles[i];
+            }
+            tile.addEventListener('click', () => moverTile(i));
+            grid.appendChild(tile);
+        }
+        container.innerHTML = '';
+        container.appendChild(grid);
+        const resetBtn = document.createElement('button');
+        resetBtn.innerText = '🔄 Reiniciar';
+        resetBtn.className = 'btn-puzzle';
+        resetBtn.style.marginTop = '15px';
+        resetBtn.onclick = () => iniciarJuegoNumeros(container);
+        container.appendChild(resetBtn);
+    }
+    
+    iniciar();
+}
+
+// ========== PUZZLE 3: LABERINTO ==========
+function iniciarJuegoLaberinto(container) {
+    const size = 15;
+    const cellSize = 30;
+    const canvas = document.createElement('canvas');
+    canvas.width = size * cellSize;
+    canvas.height = size * cellSize;
+    canvas.className = 'laberinto-canvas';
+    const ctx = canvas.getContext('2d');
+    
+    // Laberinto predefinido
+    const walls = [
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,1,1,1,1,1,0,1,1,1,1,1,1,1,0],
+        [0,1,0,0,0,1,0,1,0,0,0,1,0,1,0],
+        [0,1,0,1,1,1,1,1,0,1,1,1,0,1,0],
+        [0,1,0,1,0,0,0,0,0,1,0,0,0,1,0],
+        [0,1,1,1,0,1,1,1,1,1,0,1,1,1,0],
+        [0,0,0,1,0,1,0,0,0,0,0,1,0,0,0],
+        [0,1,1,1,1,1,0,1,1,1,1,1,1,1,0],
+        [0,1,0,0,0,1,0,1,0,0,0,0,0,1,0],
+        [0,1,1,1,0,1,1,1,0,1,1,1,1,1,0],
+        [0,0,0,1,0,0,0,1,0,1,0,0,0,0,0],
+        [0,1,1,1,1,1,1,1,0,1,1,1,1,1,0],
+        [0,1,0,0,0,0,0,1,0,0,0,0,0,1,0],
+        [0,1,1,1,1,1,1,1,1,1,1,1,1,1,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+    ];
+    
+    let player = { x: 1, y: 1 };
+    const goal = { x: 13, y: 13 };
+    
+    function dibujarLaberinto() {
+        for (let y = 0; y < size; y++) {
+            for (let x = 0; x < size; x++) {
+                if (walls[y][x] === 0) {
+                    ctx.fillStyle = '#1a0000';
+                    ctx.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
+                    ctx.strokeStyle = '#ff3300';
+                    ctx.strokeRect(x * cellSize, y * cellSize, cellSize, cellSize);
+                } else {
+                    ctx.fillStyle = '#0a0a0a';
+                    ctx.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
+                }
+            }
+        }
+        
+        // Meta
+        ctx.fillStyle = '#00cc44';
+        ctx.fillRect(goal.x * cellSize, goal.y * cellSize, cellSize, cellSize);
+        
+        // Jugador (Dustin)
+        ctx.fillStyle = '#ffcc00';
+        ctx.fillRect(player.x * cellSize, player.y * cellSize, cellSize, cellSize);
+        ctx.fillStyle = '#000';
+        ctx.fillRect(player.x * cellSize + 8, player.y * cellSize + 8, 5, 5);
+        ctx.fillRect(player.x * cellSize + 17, player.y * cellSize + 8, 5, 5);
+    }
+    
+    function mover(e) {
+        const key = e.key;
+        let newX = player.x;
+        let newY = player.y;
+        
+        if (key === 'ArrowUp') newY--;
+        if (key === 'ArrowDown') newY++;
+        if (key === 'ArrowLeft') newX--;
+        if (key === 'ArrowRight') newX++;
+        
+        if (walls[newY] && walls[newY][newX] === 1) {
+            player.x = newX;
+            player.y = newY;
+            dibujarLaberinto();
+            
+            if (player.x === goal.x && player.y === goal.y) {
+                alert('🎉 ¡Escapaste del Upside Down! 🎉');
+                player = { x: 1, y: 1 };
+                dibujarLaberinto();
+            }
+        }
+    }
+    
+    container.innerHTML = '';
+    container.appendChild(canvas);
+    const resetBtn = document.createElement('button');
+    resetBtn.innerText = '🔄 Reiniciar Laberinto';
+    resetBtn.className = 'btn-puzzle';
+    resetBtn.style.marginTop = '15px';
+    resetBtn.onclick = () => {
+        player = { x: 1, y: 1 };
+        dibujarLaberinto();
+    };
+    container.appendChild(resetBtn);
+    
+    window.addEventListener('keydown', mover);
+    dibujarLaberinto();
+    
+    // Limpiar event listener al cerrar
+    const cerrarJuego = () => window.removeEventListener('keydown', mover);
+    document.getElementById('cerrarJuegoBtn').onclick = () => {
+        window.removeEventListener('keydown', mover);
+        document.getElementById('juegoContainer').style.display = 'none';
+        document.querySelector('.puzzles-grid').style.display = 'grid';
+        document.getElementById('juegoArea').innerHTML = '';
+    };
+}
+
+// ========== PUZZLE 4: PREGUNTAS (TRIVIA) ==========
+function iniciarJuegoPreguntas(container) {
+    const preguntas = [
+        { pregunta: "¿Cómo se llama el mundo paralelo en Stranger Things?", respuestas: ["El Revés", "El Upside Down", "La Dimensión Oscura", "El Otro Lado"], correcta: 1 },
+        { pregunta: "¿Qué número tiene Eleven en el laboratorio?", respuestas: ["007", "008", "011", "012"], correcta: 2 },
+        { pregunta: "¿Cuál es el nombre del monstruo principal?", respuestas: ["Vecna", "Mind Flayer", "Demogorgon", "El Zarpazo"], correcta: 2 },
+        { pregunta: "¿Quién interpreta a Dustin?", respuestas: ["Finn Wolfhard", "Gaten Matarazzo", "Caleb McLaughlin", "Noah Schnapp"], correcta: 1 },
+        { pregunta: "¿En qué año se ambienta la primera temporada?", respuestas: ["1981", "1982", "1983", "1984"], correcta: 2 },
+        { pregunta: "¿Cómo se llama la hermana de Mike?", respuestas: ["Nancy", "Karen", "Holly", "Barbara"], correcta: 0 },
+        { pregunta: "¿Qué come Dustin en el recreo?", respuestas: ["Pizza", "Pudín", "Galletas", "Frutas"], correcta: 1 },
+        { pregunta: "¿Quién es el jefe de policía de Hawkins?", respuestas: ["Hopper", "Powell", "Callahan", "Steve"], correcta: 0 }
+    ];
+    
+    let preguntaActual = 0;
+    let puntuacion = 0;
+    
+    function mostrarPregunta() {
+        if (preguntaActual >= preguntas.length) {
+            container.innerHTML = `
+                <div class="trivia-resultado">
+                    <h3>🎉 ¡COMPLETASTE LA TRIVIA! 🎉</h3>
+                    <p>Puntuación: ${puntuacion} / ${preguntas.length}</p>
+                    <button id="reiniciarTrivia" class="btn-puzzle">🔄 Jugar de nuevo</button>
+                </div>
+            `;
+            document.getElementById('reiniciarTrivia')?.addEventListener('click', () => iniciarJuegoPreguntas(container));
+            return;
+        }
+        
+        const p = preguntas[preguntaActual];
+        let html = `<div class="contador-puntuacion">📝 Pregunta ${preguntaActual + 1} de ${preguntas.length}</div>`;
+        html += `<div class="trivia-pregunta"><p>❓ ${p.pregunta}</p></div>`;
+        html += `<div class="trivia-opciones">`;
+        p.respuestas.forEach((resp, idx) => {
+            html += `<div class="trivia-opcion" data-respuesta="${idx}">${resp}</div>`;
+        });
+        html += `</div>`;
+        html += `<div class="trivia-resultado" id="triviaResultado"></div>`;
+        container.innerHTML = html;
+        
+        document.querySelectorAll('.trivia-opcion').forEach(opt => {
+            opt.addEventListener('click', (e) => {
+                const seleccionada = parseInt(e.target.dataset.respuesta);
+                const resultadoDiv = document.getElementById('triviaResultado');
+                if (seleccionada === p.correcta) {
+                    puntuacion++;
+                    resultadoDiv.innerHTML = '✅ ¡Correcto! +1 punto';
+                    resultadoDiv.style.color = '#00cc44';
+                } else {
+                    resultadoDiv.innerHTML = `❌ Incorrecto. La respuesta era: ${p.respuestas[p.correcta]}`;
+                    resultadoDiv.style.color = '#ff3300';
+                }
+                preguntaActual++;
+                setTimeout(() => mostrarPregunta(), 1500);
+            });
+        });
+    }
+    
+    mostrarPregunta();
+}
 console.log('✅ portal-abierto.js cargado correctamente');
